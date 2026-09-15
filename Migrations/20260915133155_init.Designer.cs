@@ -9,7 +9,7 @@ using WebTeploobmenApp.Data;
 
 namespace WebTeploobmenApp.Migrations
 {
-    [DbContext(typeof(TeploobmenContext))]
+    [DbContext(typeof(WebServicesContext))]
     [Migration("20260915133155_init")]
     partial class init
     {

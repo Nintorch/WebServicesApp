@@ -1,26 +1,23 @@
-﻿@model List<Variant>
+﻿@model List<News>
 @{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="text-left">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Сайт с новостями</h1>
 
-    <a href="/Home/Parameters" class="btn btn-primary">Создать вариант</a><br />
+    <a href="/Home/Parameters" class="btn btn-primary">Создать новость</a><br />
 
     <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#variantSearch" aria-expanded="false" aria-controls="variantSearch">
-        Поиск вариантов
+        Поиск новостей
     </button><br />
     <div class="collapse" id="variantSearch">
         <div class="card card-body">
             <form method="post">
                 <label for="name" class="form-label">Название</label>
                 <input type="text" name="name" class="form-control" id="name" />
-                <label for="num1" class="form-label">Число 1</label>
-                <input type="text" name="number1" class="form-control" id="num1" />
-                <label for="num2" class="form-label">Число 2</label>
-                <input type="text" name="number2" class="form-control" id="num2" />
+                <label for="num1" class="form-label">Содержимое</label>
+                <input type="text" name="content" class="form-control" id="content" />
                 <button class="btn btn-primary">Сохранить</button>
             </form>
         </div>
@@ -29,24 +26,22 @@
     <table class="table table-hover">
         <thead>
             <tr>
-                <th>Номер варианта</th>
+                <th>Номер новости</th>
                 <th>Название</th>
-                <th>Число 1</th>
-                <th>Число 2</th>
+                <th>Содержимое</th>
                 <th>Действия</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (Variant variant in Model)
+            @foreach (News news in Model)
             {
             <tr>
-                <td>@variant.Id</td>
-                <td>@variant.Name</td>
-                <td>@variant.Number1</td>
-                <td>@variant.Number2</td>
+                <td>@news.Id</td>
+                <td>@news.Name</td>
+                <td>@news.Content</td>
                 <td>
-                    <a href="/home/parameters/@variant.Id">Редактировать</a>
-                    <a href="/Home/Delete/@variant.Id">Удалить</a>
+                    <a href="/home/parameters/@news.Id">Редактировать</a>
+                    <a href="/Home/Delete/@news.Id">Удалить</a>
                 </td>
             </tr>
             }

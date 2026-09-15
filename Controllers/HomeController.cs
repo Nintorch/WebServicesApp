@@ -13,9 +13,9 @@ namespace WebTeploobmenApp.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly TeploobmenContext _context;
+        private readonly WebServicesContext _context;
 
-        public HomeController(ILogger<HomeController> logger, TeploobmenContext context)
+        public HomeController(ILogger<HomeController> logger, WebServicesContext context)
         {
             _logger = logger;
             _context = context;
@@ -23,61 +23,55 @@ namespace WebTeploobmenApp.Controllers
 
         public IActionResult Index()
         {
-            return View(_context.Variants.ToList());
+            return View(_context.News.ToList());
         }
 
         [HttpPost]
-        public IActionResult Index(VariantViewModel model)
+        public IActionResult Index(NewsViewModel model)
         {
-            var variants = _context.Variants.AsQueryable();
+            var newsQuery = _context.News.AsQueryable();
             if (model.Name != null)
-                variants = variants.Where(v => v.Name.Contains(model.Name));
-            if (model.Number1 != null)
-                variants = variants.Where(v => v.Number1 == model.Number1);
-            if (model.Number2 != null)
-                variants = variants.Where(v => v.Number2 == model.Number2);
-            List<Variant> ret = variants.ToList();
-            return View(ret);
+                newsQuery = newsQuery.Where(v => v.Name.Contains(model.Name));
+            if (model.Content != null)
+                newsQuery = newsQuery.Where(v => v.Content.Contains(model.Content));
+            return View(newsQuery.ToList());
         }
 
         public IActionResult Parameters(int id)
         {
-            Variant? variant = _context.Variants.Find(id);
-            VariantViewModel? model = null;
+            News? variant = _context.News.Find(id);
+            NewsViewModel? model = null;
             if (variant != null)
             {
                 model = new()
                 {
                     Id = id,
                     Name = variant.Name,
-                    Number1 = variant.Number1,
-                    Number2 = variant.Number2,
+                    Content = variant.Content,
                 };
             }
             return View(model);
         }
 
         [HttpPost]
-        public IActionResult Parameters(VariantViewModel model)
+        public IActionResult Parameters(NewsViewModel model)
         {
             if (model.Id == 0)
             {
-                Variant variant = new()
+                News variant = new()
                 {
                     Name = model.Name,
-                    Number1 = model.Number1 ?? 0,
-                    Number2 = model.Number2 ?? 0,
+                    Content = model.Content,
                 };
-                _context.Variants.Add(variant);
+                _context.News.Add(variant);
             }
             else
             {
-                Variant? variant = _context.Variants.Find(model.Id);
+                News? variant = _context.News.Find(model.Id);
                 if (variant != null)
                 {
                     variant.Name = model.Name;
-                    variant.Number1 = model.Number1 ?? 0;
-                    variant.Number2 = model.Number2 ?? 0;
+                    variant.Content = model.Content;
                 }
             }
             _context.SaveChanges();
@@ -86,10 +80,10 @@ namespace WebTeploobmenApp.Controllers
 
         public IActionResult Delete(int id)
         {
-            Variant? variant = _context.Variants.Find(id);
+            News? variant = _context.News.Find(id);
             if (variant != null)
             {
-                _context.Variants.Remove(variant);
+                _context.News.Remove(variant);
                 _context.SaveChanges();
             }
             return RedirectToAction("Index");

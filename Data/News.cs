@@ -2,13 +2,11 @@
 
 namespace WebTeploobmenApp.Data
 {
-    public class Variant
+    public class News
     {
         [Key]
         public int Id { get; set; }
-
         public string Name { get; set; }
-        public int Number1 { get; set; }
-        public int Number2 { get; set; }
+        public string Content { get; set; }
     }
 }
