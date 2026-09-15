@@ -1,0 +1,21 @@
+﻿@model Variant
+@{
+    ViewData["Title"] = "Home Page";
+
+    void GenerateParam(string text, string name, object defaultValue)
+    {
+        <div class="mb-3">
+            <label class="form-label">@text</label>
+            <input type="text" class="form-control" name="@name" value="@defaultValue">
+        </div>
+    }
+}
+
+<div class="text-left">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+
+    <form action="/home/calc" method="post">
+        <button class="btn btn-primary">Рассчитать</button>
+    </form>
+</div>

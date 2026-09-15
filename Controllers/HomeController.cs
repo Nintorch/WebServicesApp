@@ -23,7 +23,13 @@ namespace WebTeploobmenApp.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            return View(_context.Variants.ToList());
+        }
+
+        public IActionResult Parameters(int id)
+        {
+            Variant variant = _context.Variants.Find(id);
+            return View(variant);
         }
 
         public IActionResult Privacy()
