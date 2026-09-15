@@ -70,6 +70,17 @@ namespace WebTeploobmenApp.Controllers
             return RedirectToAction("Index");
         }
 
+        public IActionResult Delete(int id)
+        {
+            Variant? variant = _context.Variants.Find(id);
+            if (variant != null)
+            {
+                _context.Variants.Remove(variant);
+                _context.SaveChanges();
+            }
+            return RedirectToAction("Index");
+        }
+
         public IActionResult Privacy()
         {
             return View();
