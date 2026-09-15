@@ -26,6 +26,20 @@ namespace WebTeploobmenApp.Controllers
             return View(_context.Variants.ToList());
         }
 
+        [HttpPost]
+        public IActionResult Index(VariantViewModel model)
+        {
+            var variants = _context.Variants.AsQueryable();
+            if (model.Name != null)
+                variants = variants.Where(v => v.Name.Contains(model.Name));
+            if (model.Number1 != null)
+                variants = variants.Where(v => v.Number1 == model.Number1);
+            if (model.Number2 != null)
+                variants = variants.Where(v => v.Number2 == model.Number2);
+            List<Variant> ret = variants.ToList();
+            return View(ret);
+        }
+
         public IActionResult Parameters(int id)
         {
             Variant? variant = _context.Variants.Find(id);
@@ -51,8 +65,8 @@ namespace WebTeploobmenApp.Controllers
                 Variant variant = new()
                 {
                     Name = model.Name,
-                    Number1 = model.Number1,
-                    Number2 = model.Number2,
+                    Number1 = model.Number1 ?? 0,
+                    Number2 = model.Number2 ?? 0,
                 };
                 _context.Variants.Add(variant);
             }
@@ -62,8 +76,8 @@ namespace WebTeploobmenApp.Controllers
                 if (variant != null)
                 {
                     variant.Name = model.Name;
-                    variant.Number1 = model.Number1;
-                    variant.Number2 = model.Number2;
+                    variant.Number1 = model.Number1 ?? 0;
+                    variant.Number2 = model.Number2 ?? 0;
                 }
             }
             _context.SaveChanges();

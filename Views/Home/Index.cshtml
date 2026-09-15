@@ -9,6 +9,23 @@
 
     <a href="/Home/Parameters" class="btn btn-primary">Создать вариант</a><br />
 
+    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#variantSearch" aria-expanded="false" aria-controls="variantSearch">
+        Поиск вариантов
+    </button><br />
+    <div class="collapse" id="variantSearch">
+        <div class="card card-body">
+            <form method="post">
+                <label for="name" class="form-label">Название</label>
+                <input type="text" name="name" class="form-control" id="name" />
+                <label for="num1" class="form-label">Число 1</label>
+                <input type="text" name="number1" class="form-control" id="num1" />
+                <label for="num2" class="form-label">Число 2</label>
+                <input type="text" name="number2" class="form-control" id="num2" />
+                <button class="btn btn-primary">Сохранить</button>
+            </form>
+        </div>
+    </div>
+
     <table class="table table-hover">
         <thead>
             <tr>
@@ -20,19 +37,19 @@
             </tr>
         </thead>
         <tbody>
+            @foreach (Variant variant in Model)
+            {
             <tr>
-                @foreach (Variant variant in Model)
-                {
-                    <td>@variant.Id</td>
-                    <td>@variant.Name</td>
-                    <td>@variant.Number1</td>
-                    <td>@variant.Number2</td>
-                    <td>
-                        <a href="/home/parameters/@variant.Id">Редактировать</a>
-                        <a href="/Home/Delete/@variant.Id">Удалить</a>
-                    </td>
-                }
+                <td>@variant.Id</td>
+                <td>@variant.Name</td>
+                <td>@variant.Number1</td>
+                <td>@variant.Number2</td>
+                <td>
+                    <a href="/home/parameters/@variant.Id">Редактировать</a>
+                    <a href="/Home/Delete/@variant.Id">Удалить</a>
+                </td>
             </tr>
+            }
         </tbody>
     </table>
 </div>
