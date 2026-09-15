@@ -32,6 +32,8 @@ namespace WebTeploobmenApp.Controllers
             var newsQuery = _context.News.AsQueryable();
             if (model.Name != null)
                 newsQuery = newsQuery.Where(v => v.Name.Contains(model.Name));
+            if (model.Category != null)
+                newsQuery = newsQuery.Where(v => v.Category.Contains(model.Category));
             if (model.Content != null)
                 newsQuery = newsQuery.Where(v => v.Content.Contains(model.Content));
             return View(newsQuery.ToList());
@@ -47,6 +49,7 @@ namespace WebTeploobmenApp.Controllers
                 {
                     Id = id,
                     Name = variant.Name,
+                    Category = variant.Category,
                     Content = variant.Content,
                 };
             }
@@ -61,6 +64,7 @@ namespace WebTeploobmenApp.Controllers
                 News variant = new()
                 {
                     Name = model.Name,
+                    Category = model.Category,
                     Content = model.Content,
                 };
                 _context.News.Add(variant);
@@ -71,6 +75,7 @@ namespace WebTeploobmenApp.Controllers
                 if (variant != null)
                 {
                     variant.Name = model.Name;
+                    variant.Category = model.Category;
                     variant.Content = model.Content;
                 }
             }

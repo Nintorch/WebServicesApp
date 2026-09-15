@@ -16,6 +16,8 @@
             <form method="post">
                 <label for="name" class="form-label">Название</label>
                 <input type="text" name="name" class="form-control" id="name" />
+                <label for="category" class="form-label">Категория</label>
+                <input type="text" name="category" class="form-control" id="category" />
                 <label for="num1" class="form-label">Содержимое</label>
                 <input type="text" name="content" class="form-control" id="content" />
                 <button class="btn btn-primary">Сохранить</button>
@@ -28,6 +30,7 @@
             <tr>
                 <th>Номер новости</th>
                 <th>Название</th>
+                <th>Категория</th>
                 <th>Содержимое</th>
                 <th>Действия</th>
             </tr>
@@ -38,6 +41,7 @@
             <tr>
                 <td>@news.Id</td>
                 <td>@news.Name</td>
+                <td>@news.Category</td>
                 <td>@news.Content</td>
                 <td>
                     <a href="/home/parameters/@news.Id">Редактировать</a>

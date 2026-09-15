@@ -11,8 +11,10 @@
         <input type="hidden" name="id" value="@Model?.Id" />
         <label for="name" class="form-label">Название</label>
         <input type="text" name="name" class="form-control" id="name" value="@Model?.Name">
+        <label for="category" class="form-label">Категория</label>
+        <input type="text" name="category" class="form-control" id="category" value="@Model?.Category" />
         <label for="num1" class="form-label">Содержимое</label>
-        <input type="text" name="content" class="form-control" id="content" value="@Model?.Content"/>
+        <input type="text" name="content" class="form-control" id="content" value="@Model?.Content" />
         <button class="btn btn-primary">Сохранить</button>
     </form>
 </div>
