@@ -1,4 +1,5 @@
-﻿@{
+﻿@model VariantViewModel
+@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -7,12 +8,13 @@
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 
     <form method="post">
+        <input type="hidden" name="id" value="@Model?.Id"/>
         <label for="name" class="form-label">Название</label>
-        <input type="text" name="name" class="form-control" id="name">
+        <input type="text" name="name" class="form-control" id="name" value="@Model?.Name">
         <label for="num1" class="form-label">Число 1</label>
-        <input type="text" name="number1" class="form-control" id="num1">
+        <input type="text" name="number1" class="form-control" id="num1" value="@Model?.Number1">
         <label for="num2" class="form-label">Число 2</label>
-        <input type="text" name="number2" class="form-control" id="num2">
-        <button class="btn btn-primary">Создать вариант</button>
+        <input type="text" name="number2" class="form-control" id="num2" value="@Model?.Number2">
+        <button class="btn btn-primary">Сохранить</button>
     </form>
 </div>

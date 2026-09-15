@@ -26,21 +26,46 @@ namespace WebTeploobmenApp.Controllers
             return View(_context.Variants.ToList());
         }
 
-        public IActionResult Parameters()
+        public IActionResult Parameters(int id)
         {
-            return View();
+            Variant? variant = _context.Variants.Find(id);
+            VariantViewModel? model = null;
+            if (variant != null)
+            {
+                model = new()
+                {
+                    Id = id,
+                    Name = variant.Name,
+                    Number1 = variant.Number1,
+                    Number2 = variant.Number2,
+                };
+            }
+            return View(model);
         }
 
         [HttpPost]
         public IActionResult Parameters(VariantViewModel model)
         {
-            Variant variant = new()
+            if (model.Id == 0)
             {
-                Name = model.Name,
-                Number1 = model.Number1,
-                Number2 = model.Number2,
-            };
-            _context.Variants.Add(variant);
+                Variant variant = new()
+                {
+                    Name = model.Name,
+                    Number1 = model.Number1,
+                    Number2 = model.Number2,
+                };
+                _context.Variants.Add(variant);
+            }
+            else
+            {
+                Variant? variant = _context.Variants.Find(model.Id);
+                if (variant != null)
+                {
+                    variant.Name = model.Name;
+                    variant.Number1 = model.Number1;
+                    variant.Number2 = model.Number2;
+                }
+            }
             _context.SaveChanges();
             return RedirectToAction("Index");
         }
