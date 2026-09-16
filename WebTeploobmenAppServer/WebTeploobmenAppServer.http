@@ -1,0 +1,6 @@
+@WebTeploobmenAppServer_HostAddress = http://localhost:5157
+
+GET {{WebTeploobmenAppServer_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
