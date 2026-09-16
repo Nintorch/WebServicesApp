@@ -14,7 +14,7 @@ namespace WebTeploobmenAppServer
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            builder.Services.AddSwaggerGen(options => options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "docs.xml")));
             builder.Services.AddDbContext<WebServicesContext>(o => o.UseSqlite("Data Source = Teploobmen.db"));
 
             var app = builder.Build();

@@ -1,0 +1,79 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>WebTeploobmenAppServer</name>
+    </assembly>
+    <members>
+        <member name="M:WebTeploobmenAppServer.Controllers.NewsController.GetNews(System.Int32)">
+            <summary>
+            Получить список всех новостей, или информацию о конкретной новости
+            </summary>
+            <param name="id">ID новости, или 0 для просмотра списка всех новостей</param>
+            <returns></returns>
+        </member>
+        <member name="M:WebTeploobmenAppServer.Controllers.NewsController.SearchNews(WebTeploobmenAppServer.Models.NewsViewModel)">
+            <summary>
+            Фильтрация новостей по параметрам
+            </summary>
+            <param name="model">Параметры фильтрации</param>
+            <returns></returns>
+        </member>
+        <member name="M:WebTeploobmenAppServer.Controllers.NewsController.CreateNews(WebTeploobmenAppServer.Data.News)">
+            <summary>
+            Создание новости
+            </summary>
+            <param name="model">Информация о новости</param>
+            <returns></returns>
+        </member>
+        <member name="M:WebTeploobmenAppServer.Controllers.NewsController.ModifyNews(WebTeploobmenAppServer.Data.News)">
+            <summary>
+            Изменение данных о новости
+            </summary>
+            <param name="model">Данные о новости, включая её ID</param>
+            <returns></returns>
+        </member>
+        <member name="M:WebTeploobmenAppServer.Controllers.NewsController.DeleteNews(System.Int32)">
+            <summary>
+            Удаление новости
+            </summary>
+            <param name="id">ID новости</param>
+            <returns></returns>
+        </member>
+        <member name="T:WebTeploobmenAppClient.Migrations.init">
+            <inheritdoc />
+        </member>
+        <member name="M:WebTeploobmenAppClient.Migrations.init.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:WebTeploobmenAppClient.Migrations.init.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:WebTeploobmenAppClient.Migrations.init.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:WebTeploobmenAppClient.Migrations.ChangeToNews">
+            <inheritdoc />
+        </member>
+        <member name="M:WebTeploobmenAppClient.Migrations.ChangeToNews.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:WebTeploobmenAppClient.Migrations.ChangeToNews.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:WebTeploobmenAppClient.Migrations.ChangeToNews.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:WebTeploobmenAppClient.Migrations.AddCategory">
+            <inheritdoc />
+        </member>
+        <member name="M:WebTeploobmenAppClient.Migrations.AddCategory.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:WebTeploobmenAppClient.Migrations.AddCategory.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:WebTeploobmenAppClient.Migrations.AddCategory.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+    </members>
+</doc>

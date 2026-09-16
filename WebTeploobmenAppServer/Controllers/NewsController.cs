@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using WebTeploobmenAppClient.Models;
 using WebTeploobmenAppServer.Data;
 using WebTeploobmenAppServer.Models;
 
@@ -18,6 +17,11 @@ namespace WebTeploobmenAppServer.Controllers
             _context = context;
         }
 
+        /// <summary>
+        /// Получить список всех новостей, или информацию о конкретной новости
+        /// </summary>
+        /// <param name="id">ID новости, или 0 для просмотра списка всех новостей</param>
+        /// <returns></returns>
         [HttpGet("GetNews")]
         public List<News> GetNews(int id)
         {
@@ -33,6 +37,11 @@ namespace WebTeploobmenAppServer.Controllers
             return [news];
         }
 
+        /// <summary>
+        /// Фильтрация новостей по параметрам
+        /// </summary>
+        /// <param name="model">Параметры фильтрации</param>
+        /// <returns></returns>
         [HttpPost("SearchNews")]
         public List<News> SearchNews(NewsViewModel model)
         {
@@ -46,6 +55,11 @@ namespace WebTeploobmenAppServer.Controllers
             return newsQuery.ToList();
         }
 
+        /// <summary>
+        /// Создание новости
+        /// </summary>
+        /// <param name="model">Информация о новости</param>
+        /// <returns></returns>
         [HttpPost("CreateNews")]
         public IActionResult CreateNews(News model)
         {
@@ -60,6 +74,11 @@ namespace WebTeploobmenAppServer.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Изменение данных о новости
+        /// </summary>
+        /// <param name="model">Данные о новости, включая её ID</param>
+        /// <returns></returns>
         [HttpPost("ModifyNews")]
         public IActionResult ModifyNews(News model)
         {
@@ -75,6 +94,11 @@ namespace WebTeploobmenAppServer.Controllers
             return NotFound();
         }
 
+        /// <summary>
+        /// Удаление новости
+        /// </summary>
+        /// <param name="id">ID новости</param>
+        /// <returns></returns>
         [HttpGet("DeleteNews")]
         public IActionResult DeleteNews(int id)
         {
