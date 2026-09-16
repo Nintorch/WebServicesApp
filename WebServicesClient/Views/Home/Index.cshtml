@@ -1,4 +1,4 @@
-﻿@model List<News>
+﻿@model List<NewsViewModel>
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -36,7 +36,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (News news in Model)
+            @foreach (NewsViewModel news in Model)
             {
             <tr>
                 <td>@news.Id</td>

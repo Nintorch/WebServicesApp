@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace WebTeploobmenApp.Data
+namespace WebTeploobmenAppServer.Data
 {
     public class News
     {

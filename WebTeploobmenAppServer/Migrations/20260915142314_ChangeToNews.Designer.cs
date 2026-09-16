@@ -3,15 +3,15 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using WebTeploobmenApp.Data;
+using WebTeploobmenAppServer.Data;
 
 #nullable disable
 
-namespace WebTeploobmenApp.Migrations
+namespace WebTeploobmenAppClient.Migrations
 {
     [DbContext(typeof(WebServicesContext))]
-    [Migration("20260915133155_init")]
-    partial class init
+    [Migration("20260915142314_ChangeToNews")]
+    partial class ChangeToNews
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -19,24 +19,21 @@ namespace WebTeploobmenApp.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.11");
 
-            modelBuilder.Entity("WebTeploobmenApp.Data.Variant", b =>
+            modelBuilder.Entity("WebTeploobmenApp.Data.News", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("Content")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("Number1")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("Number2")
-                        .HasColumnType("INTEGER");
-
                     b.HasKey("Id");
 
-                    b.ToTable("Variants");
+                    b.ToTable("News");
                 });
 #pragma warning restore 612, 618
         }

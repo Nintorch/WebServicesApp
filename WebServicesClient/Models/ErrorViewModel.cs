@@ -1,6 +1,6 @@
 using System;
 
-namespace WebTeploobmenApp.Models
+namespace WebTeploobmenAppClient.Models
 {
     public class ErrorViewModel
     {

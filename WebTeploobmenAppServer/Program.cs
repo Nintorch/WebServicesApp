@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+using WebTeploobmenAppServer.Data;
 
 namespace WebTeploobmenAppServer
 {
@@ -13,6 +15,7 @@ namespace WebTeploobmenAppServer
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddDbContext<WebServicesContext>(o => o.UseSqlite("Data Source = Teploobmen.db"));
 
             var app = builder.Build();
 

@@ -1,12 +1,11 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using WebTeploobmenApp.Data;
+using WebTeploobmenAppClient;
 
-namespace WebTeploobmenApp
+namespace WebTeploobmenAppClient
 {
     public class Startup
     {
@@ -21,7 +20,7 @@ namespace WebTeploobmenApp
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            services.AddDbContext<WebServicesContext>(o => o.UseSqlite("Data Source = Teploobmen.db"));
+            services.Configure<MyConfig>(Configuration.GetSection("MyConfig"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

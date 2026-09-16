@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace WebTeploobmenApp.Migrations
+namespace WebTeploobmenAppClient.Migrations
 {
     /// <inheritdoc />
     public partial class init : Migration

@@ -1,97 +1,52 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Json;
 using System.Threading.Tasks;
-using WebTeploobmenApp.Data;
-using WebTeploobmenApp.Models;
+using WebTeploobmenAppClient.Models;
 
-namespace WebTeploobmenApp.Controllers
+namespace WebTeploobmenAppClient.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly WebServicesContext _context;
+        private readonly IOptions<MyConfig> _config;
 
-        public HomeController(ILogger<HomeController> logger, WebServicesContext context)
+        public HomeController(ILogger<HomeController> logger, IOptions<MyConfig> config)
         {
             _logger = logger;
-            _context = context;
+            _config = config;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View(_context.News.ToList());
+            return View(); // TODO
         }
 
         [HttpPost]
         public IActionResult Index(NewsViewModel model)
         {
-            var newsQuery = _context.News.AsQueryable();
-            if (model.Name != null)
-                newsQuery = newsQuery.Where(v => v.Name.Contains(model.Name));
-            if (model.Category != null)
-                newsQuery = newsQuery.Where(v => v.Category.Contains(model.Category));
-            if (model.Content != null)
-                newsQuery = newsQuery.Where(v => v.Content.Contains(model.Content));
-            return View(newsQuery.ToList());
+            return View(); // TODO
         }
 
         public IActionResult Parameters(int id)
         {
-            News? variant = _context.News.Find(id);
-            NewsViewModel? model = null;
-            if (variant != null)
-            {
-                model = new()
-                {
-                    Id = id,
-                    Name = variant.Name,
-                    Category = variant.Category,
-                    Content = variant.Content,
-                };
-            }
-            return View(model);
+            return View(); // TODO
         }
 
         [HttpPost]
         public IActionResult Parameters(NewsViewModel model)
         {
-            if (model.Id == 0)
-            {
-                News variant = new()
-                {
-                    Name = model.Name,
-                    Category = model.Category,
-                    Content = model.Content,
-                };
-                _context.News.Add(variant);
-            }
-            else
-            {
-                News? variant = _context.News.Find(model.Id);
-                if (variant != null)
-                {
-                    variant.Name = model.Name;
-                    variant.Category = model.Category;
-                    variant.Content = model.Content;
-                }
-            }
-            _context.SaveChanges();
-            return RedirectToAction("Index");
+            return View(); // TODO
         }
 
         public IActionResult Delete(int id)
         {
-            News? variant = _context.News.Find(id);
-            if (variant != null)
-            {
-                _context.News.Remove(variant);
-                _context.SaveChanges();
-            }
-            return RedirectToAction("Index");
+            return View(); // TODO
         }
 
         public IActionResult Privacy()

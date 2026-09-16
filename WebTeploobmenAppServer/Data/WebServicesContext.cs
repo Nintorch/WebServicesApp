@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace WebTeploobmenApp.Data
+namespace WebTeploobmenAppServer.Data
 {
     public class WebServicesContext : DbContext
     {

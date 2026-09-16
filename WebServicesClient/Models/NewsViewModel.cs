@@ -1,4 +1,4 @@
-﻿namespace WebTeploobmenApp.Models
+﻿namespace WebTeploobmenAppClient.Models
 {
     public class NewsViewModel
     {
