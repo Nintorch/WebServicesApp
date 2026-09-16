@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.35229.62
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34622.214
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebTeploobmenApp", "WebTeploobmenApp.csproj", "{EC09D64A-819C-4316-ADA1-86AD2C947C46}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebTeploobmenAppClient", "WebServicesClient\WebTeploobmenAppClient.csproj", "{618C3D18-20CA-44BE-8EF8-889500EE4373}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{EC09D64A-819C-4316-ADA1-86AD2C947C46}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EC09D64A-819C-4316-ADA1-86AD2C947C46}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EC09D64A-819C-4316-ADA1-86AD2C947C46}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EC09D64A-819C-4316-ADA1-86AD2C947C46}.Release|Any CPU.Build.0 = Release|Any CPU
+		{618C3D18-20CA-44BE-8EF8-889500EE4373}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{618C3D18-20CA-44BE-8EF8-889500EE4373}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{618C3D18-20CA-44BE-8EF8-889500EE4373}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{618C3D18-20CA-44BE-8EF8-889500EE4373}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {9DEA44E0-DCF6-48E0-8D4F-2B133C326886}
+		SolutionGuid = {B72AABA4-1393-47D4-BCCE-0123AB4FAE43}
 	EndGlobalSection
 EndGlobal
