@@ -24,29 +24,50 @@ namespace WebTeploobmenAppClient.Controllers
 
         public async Task<IActionResult> Index()
         {
-            return View(); // TODO
+            HttpResponseMessage response = await new HttpClient().GetAsync(_config.Value.ServerRequestUri + "News/GetNews");
+            return View(await response.Content.ReadFromJsonAsync<List<NewsViewModel>>());
         }
 
         [HttpPost]
-        public IActionResult Index(NewsViewModel model)
+        public async Task<IActionResult> Index(NewsViewModel model)
         {
-            return View(); // TODO
+            HttpResponseMessage response = await new HttpClient().PostAsJsonAsync(_config.Value.ServerRequestUri + "News/SearchNews", model);
+            return View(await response.Content.ReadFromJsonAsync<List<NewsViewModel>>());
         }
 
-        public IActionResult Parameters(int id)
+        public async Task<IActionResult> Parameters(int id)
         {
-            return View(); // TODO
+            if (id > 0)
+            {
+                HttpResponseMessage response = await new HttpClient().GetAsync(_config.Value.ServerRequestUri + "News/GetNews/?id=" + id);
+                List<NewsViewModel>? value = await response.Content.ReadFromJsonAsync<List<NewsViewModel>>();
+                if (value == null || value.Count == 0)
+                {
+                    return View();
+                }
+                return View(value[0]);
+            }
+            return View();
         }
 
         [HttpPost]
-        public IActionResult Parameters(NewsViewModel model)
+        public async Task<IActionResult> Parameters(NewsViewModel model)
         {
-            return View(); // TODO
+            if (model.Id == 0)
+            {
+                await new HttpClient().PostAsJsonAsync(_config.Value.ServerRequestUri + "News/CreateNews", model);
+            }
+            else
+            {
+                await new HttpClient().PostAsJsonAsync(_config.Value.ServerRequestUri + "News/ModifyNews", model);
+            }
+            return RedirectToAction("Index");
         }
 
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            return View(); // TODO
+            await new HttpClient().GetAsync(_config.Value.ServerRequestUri + "News/DeleteNews/?id=" + id);
+            return RedirectToAction("Index");
         }
 
         public IActionResult Privacy()

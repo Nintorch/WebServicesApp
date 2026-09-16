@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
+using WebTeploobmenAppClient.Models;
 using WebTeploobmenAppServer.Data;
+using WebTeploobmenAppServer.Models;
 
 namespace WebTeploobmenAppServer.Controllers
 {
@@ -17,13 +19,22 @@ namespace WebTeploobmenAppServer.Controllers
         }
 
         [HttpGet("GetNews")]
-        public List<News> GetNews()
+        public List<News> GetNews(int id)
         {
-            return _context.News.ToList();
+            if (id == 0)
+            {
+                return _context.News.ToList();
+            }
+            News? news = _context.News.Find(id);
+            if (news == null)
+            {
+                return [];
+            }
+            return [news];
         }
 
         [HttpPost("SearchNews")]
-        public List<News> SearchNews(News model)
+        public List<News> SearchNews(NewsViewModel model)
         {
             var newsQuery = _context.News.AsQueryable();
             if (model.Name != null)
