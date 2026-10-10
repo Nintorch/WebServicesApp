@@ -60,7 +60,7 @@ namespace WebTeploobmenAppServer.Controllers
         /// </summary>
         /// <param name="model">Информация о новости</param>
         /// <returns></returns>
-        [HttpPost("CreateNews")]
+        [HttpPut("CreateNews")]
         public IActionResult CreateNews(News model)
         {
             News variant = new()
@@ -79,7 +79,7 @@ namespace WebTeploobmenAppServer.Controllers
         /// </summary>
         /// <param name="model">Данные о новости, включая её ID</param>
         /// <returns></returns>
-        [HttpPost("ModifyNews")]
+        [HttpPatch("ModifyNews")]
         public IActionResult ModifyNews(News model)
         {
             News? variant = _context.News.Find(model.Id);
@@ -99,7 +99,7 @@ namespace WebTeploobmenAppServer.Controllers
         /// </summary>
         /// <param name="id">ID новости</param>
         /// <returns></returns>
-        [HttpGet("DeleteNews")]
+        [HttpDelete("DeleteNews")]
         public IActionResult DeleteNews(int id)
         {
             News? variant = _context.News.Find(id);

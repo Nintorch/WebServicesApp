@@ -57,7 +57,7 @@ namespace WebTeploobmenAppServer.Controllers
         /// </summary>
         /// <param name="model">Информация о категории</param>
         /// <returns></returns>
-        [HttpPost("CreateCategory")]
+        [HttpPut("CreateCategory")]
         public IActionResult CreateCategory(Category model)
         {
             Category category = new()
@@ -74,7 +74,7 @@ namespace WebTeploobmenAppServer.Controllers
         /// </summary>
         /// <param name="model">Данные о категории, включая её ID</param>
         /// <returns></returns>
-        [HttpPost("ModifyCategory")]
+        [HttpPatch("ModifyCategory")]
         public IActionResult ModifyCategory(Category model)
         {
             Category? category = _context.Categories.Find(model.Id);
@@ -92,7 +92,7 @@ namespace WebTeploobmenAppServer.Controllers
         /// </summary>
         /// <param name="id">ID категории</param>
         /// <returns></returns>
-        [HttpGet("DeleteCategory")]
+        [HttpDelete("DeleteCategory")]
         public IActionResult DeleteCategory(int id)
         {
             Category? category = _context.Categories.Find(id);
