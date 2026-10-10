@@ -4,6 +4,41 @@
         <name>WebTeploobmenAppServer</name>
     </assembly>
     <members>
+        <member name="M:WebTeploobmenAppServer.Controllers.CategoryController.GetCategories(System.Int32)">
+            <summary>
+            Получить список всех категорий, или информацию о конкретной категории
+            </summary>
+            <param name="id">ID категории, или 0 для просмотра списка всех категорий</param>
+            <returns></returns>
+        </member>
+        <member name="M:WebTeploobmenAppServer.Controllers.CategoryController.SearchCategories(WebTeploobmenAppServer.Models.CategoryViewModel)">
+            <summary>
+            Фильтрация категорий по параметрам
+            </summary>
+            <param name="model">Параметры фильтрации</param>
+            <returns></returns>
+        </member>
+        <member name="M:WebTeploobmenAppServer.Controllers.CategoryController.CreateCategory(WebTeploobmenAppServer.Data.Category)">
+            <summary>
+            Создание категории
+            </summary>
+            <param name="model">Информация о категории</param>
+            <returns></returns>
+        </member>
+        <member name="M:WebTeploobmenAppServer.Controllers.CategoryController.ModifyCategory(WebTeploobmenAppServer.Data.Category)">
+            <summary>
+            Изменение данных о категории
+            </summary>
+            <param name="model">Данные о категории, включая её ID</param>
+            <returns></returns>
+        </member>
+        <member name="M:WebTeploobmenAppServer.Controllers.CategoryController.DeleteCategory(System.Int32)">
+            <summary>
+            Удаление категории
+            </summary>
+            <param name="id">ID категории</param>
+            <returns></returns>
+        </member>
         <member name="M:WebTeploobmenAppServer.Controllers.NewsController.GetNews(System.Int32)">
             <summary>
             Получить список всех новостей, или информацию о конкретной новости
@@ -73,6 +108,30 @@
             <inheritdoc />
         </member>
         <member name="M:WebTeploobmenAppClient.Migrations.AddCategory.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:WebTeploobmenAppClient.Migrations.AddCategoryEntity">
+            <inheritdoc />
+        </member>
+        <member name="M:WebTeploobmenAppClient.Migrations.AddCategoryEntity.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:WebTeploobmenAppClient.Migrations.AddCategoryEntity.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:WebTeploobmenAppClient.Migrations.AddCategoryEntity.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:WebTeploobmenAppClient.Migrations.AddNewsRelationToCategory">
+            <inheritdoc />
+        </member>
+        <member name="M:WebTeploobmenAppClient.Migrations.AddNewsRelationToCategory.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:WebTeploobmenAppClient.Migrations.AddNewsRelationToCategory.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:WebTeploobmenAppClient.Migrations.AddNewsRelationToCategory.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
     </members>
