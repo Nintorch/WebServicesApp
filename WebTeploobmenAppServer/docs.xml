@@ -60,7 +60,7 @@
             <param name="model">Информация о новости</param>
             <returns></returns>
         </member>
-        <member name="M:WebTeploobmenAppServer.Controllers.NewsController.ModifyNews(WebTeploobmenAppServer.Data.News)">
+        <member name="M:WebTeploobmenAppServer.Controllers.NewsController.ModifyNews(WebTeploobmenAppServer.Models.NewsModifyViewModel)">
             <summary>
             Изменение данных о новости
             </summary>

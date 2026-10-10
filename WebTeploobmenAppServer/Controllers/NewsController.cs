@@ -23,18 +23,18 @@ namespace WebTeploobmenAppServer.Controllers
         /// <param name="id">ID новости, или 0 для просмотра списка всех новостей</param>
         /// <returns></returns>
         [HttpGet("GetNews")]
-        public List<News> GetNews(int id)
+        public List<NewsViewModel> GetNews(int id)
         {
             if (id == 0)
             {
-                return _context.News.ToList();
+                return _context.News.Select(n => n.CreateViewModel(_context)).ToList();
             }
             News? news = _context.News.Find(id);
             if (news == null)
             {
                 return [];
             }
-            return [news];
+            return [news.CreateViewModel(_context)];
         }
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace WebTeploobmenAppServer.Controllers
         /// <param name="model">Параметры фильтрации</param>
         /// <returns></returns>
         [HttpPost("SearchNews")]
-        public List<News> SearchNews(NewsViewModel model)
+        public List<NewsViewModel> SearchNews(NewsViewModel model)
         {
             var newsQuery = _context.News.AsQueryable();
             if (model.Name != null)
@@ -52,7 +52,7 @@ namespace WebTeploobmenAppServer.Controllers
                 newsQuery = newsQuery.Where(v => v.CategoryId == model.CategoryId);
             if (model.Content != null)
                 newsQuery = newsQuery.Where(v => v.Content.Contains(model.Content));
-            return newsQuery.ToList();
+            return newsQuery.Select(n => n.CreateViewModel(_context)).ToList();
         }
 
         /// <summary>
@@ -80,14 +80,17 @@ namespace WebTeploobmenAppServer.Controllers
         /// <param name="model">Данные о новости, включая её ID</param>
         /// <returns></returns>
         [HttpPatch("ModifyNews")]
-        public IActionResult ModifyNews(News model)
+        public IActionResult ModifyNews(NewsModifyViewModel model)
         {
             News? variant = _context.News.Find(model.Id);
             if (variant != null)
             {
-                variant.Name = model.Name;
-                variant.CategoryId = model.CategoryId;
-                variant.Content = model.Content;
+                if (model.Name != null)
+                    variant.Name = model.Name;
+                if (model.CategoryId != null)
+                    variant.CategoryId = model.CategoryId ?? 0;
+                if (model.Content != null)
+                    variant.Content = model.Content;
                 _context.SaveChanges();
                 return Ok();
             }

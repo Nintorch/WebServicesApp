@@ -1,0 +1,14 @@
+﻿@model CategoryViewModel
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-left">
+
+    <form method="post">
+        <input type="hidden" name="id" value="@Model?.Id" />
+        <label for="name" class="form-label">Название</label>
+        <input type="text" name="name" class="form-control" id="name" value="@Model?.Name">
+        <button class="btn btn-primary">Сохранить</button>
+    </form>
+</div>

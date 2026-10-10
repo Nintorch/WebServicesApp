@@ -1,4 +1,4 @@
-﻿@model List<NewsViewModel>
+﻿@model NewsCategoriesViewModel
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -6,7 +6,9 @@
 <div class="text-left">
     <h1 class="display-4">Сайт с новостями</h1>
 
-    <a href="/Home/Parameters" class="btn btn-primary">Создать новость</a><br />
+    <a href="/Category/Index" class="btn btn-primary">Перейти к списку категорий</a>
+    <a href="/Home/Parameters" class="btn btn-primary">Создать новость</a>
+    <br />
 
     <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#variantSearch" aria-expanded="false" aria-controls="variantSearch">
         Поиск новостей
@@ -17,7 +19,13 @@
                 <label for="name" class="form-label">Название</label>
                 <input type="text" name="name" class="form-control" id="name" />
                 <label for="category" class="form-label">Категория</label>
-                <input type="text" name="category" class="form-control" id="category" />
+                <select name="categoryId" class="custom-select">
+                    <option value="0">(Без категории)</option>
+                    @foreach (CategoryViewModel category in Model.Categories)
+                    {
+                        <option value="@category.Id">@category.Name</option>
+                    }
+                </select>
                 <label for="num1" class="form-label">Содержимое</label>
                 <input type="text" name="content" class="form-control" id="content" />
                 <button class="btn btn-primary">Сохранить</button>
@@ -36,18 +44,18 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (NewsViewModel news in Model)
+            @foreach (NewsViewModel news in Model.News)
             {
-            <tr>
-                <td>@news.Id</td>
-                <td>@news.Name</td>
-                <td>@news.Category</td>
-                <td>@news.Content</td>
-                <td>
-                    <a href="/home/parameters/@news.Id">Редактировать</a>
-                    <a href="/Home/Delete/@news.Id">Удалить</a>
-                </td>
-            </tr>
+                <tr>
+                    <td>@news.Id</td>
+                    <td>@news.Name</td>
+                    <td>@news.CategoryName</td>
+                    <td>@news.Content</td>
+                    <td>
+                        <a href="/home/parameters/@news.Id">Редактировать</a>
+                        <a href="/Home/Delete/@news.Id">Удалить</a>
+                    </td>
+                </tr>
             }
         </tbody>
     </table>

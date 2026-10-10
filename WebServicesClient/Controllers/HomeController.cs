@@ -22,17 +22,32 @@ namespace WebTeploobmenAppClient.Controllers
             _config = config;
         }
 
+        private async Task<List<CategoryViewModel>> GetCategories()
+        {
+            HttpResponseMessage response = await new HttpClient().GetAsync(_config.Value.ServerRequestUri + "Category/GetCategories");
+            List<CategoryViewModel> categories = await response.Content.ReadFromJsonAsync<List<CategoryViewModel>>() ?? [];
+            return categories;
+        }
+
         public async Task<IActionResult> Index()
         {
             HttpResponseMessage response = await new HttpClient().GetAsync(_config.Value.ServerRequestUri + "News/GetNews");
-            return View(await response.Content.ReadFromJsonAsync<List<NewsViewModel>>());
+            return View(new NewsCategoriesViewModel()
+            {
+                News = await response.Content.ReadFromJsonAsync<List<NewsViewModel>>(),
+                Categories = await GetCategories()
+            });
         }
 
         [HttpPost]
         public async Task<IActionResult> Index(NewsViewModel model)
         {
             HttpResponseMessage response = await new HttpClient().PostAsJsonAsync(_config.Value.ServerRequestUri + "News/SearchNews", model);
-            return View(await response.Content.ReadFromJsonAsync<List<NewsViewModel>>());
+            return View(new NewsCategoriesViewModel()
+            {
+                News = await response.Content.ReadFromJsonAsync<List<NewsViewModel>>(),
+                Categories = await GetCategories()
+            });
         }
 
         public async Task<IActionResult> Parameters(int id)
@@ -45,9 +60,10 @@ namespace WebTeploobmenAppClient.Controllers
                 {
                     return View();
                 }
-                return View(value[0]);
+
+                return View(new NewsModifyViewModel() { News = value[0], Categories = await GetCategories()});
             }
-            return View();
+            return View(new NewsModifyViewModel() { News = null, Categories = await GetCategories() });
         }
 
         [HttpPost]
@@ -55,18 +71,18 @@ namespace WebTeploobmenAppClient.Controllers
         {
             if (model.Id == 0)
             {
-                await new HttpClient().PostAsJsonAsync(_config.Value.ServerRequestUri + "News/CreateNews", model);
+                await new HttpClient().PutAsJsonAsync(_config.Value.ServerRequestUri + "News/CreateNews", model);
             }
             else
             {
-                await new HttpClient().PostAsJsonAsync(_config.Value.ServerRequestUri + "News/ModifyNews", model);
+                await new HttpClient().PatchAsJsonAsync(_config.Value.ServerRequestUri + "News/ModifyNews", model);
             }
             return RedirectToAction("Index");
         }
 
         public async Task<IActionResult> Delete(int id)
         {
-            await new HttpClient().GetAsync(_config.Value.ServerRequestUri + "News/DeleteNews/?id=" + id);
+            await new HttpClient().DeleteAsync(_config.Value.ServerRequestUri + "News/DeleteNews/?id=" + id);
             return RedirectToAction("Index");
         }
 
