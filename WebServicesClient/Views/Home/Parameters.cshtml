@@ -12,7 +12,6 @@
 
         <label for="categoryId" class="form-label">Категория</label>
         <select name="categoryId" class="custom-select">
-            <option value="0">(Без категории)</option>
             @foreach (CategoryViewModel category in Model?.Categories)
             {
                 if (Model?.News != null && Model.News.CategoryId == category.Id)

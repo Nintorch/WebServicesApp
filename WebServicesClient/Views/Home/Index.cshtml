@@ -20,7 +20,6 @@
                 <input type="text" name="name" class="form-control" id="name" />
                 <label for="category" class="form-label">Категория</label>
                 <select name="categoryId" class="custom-select">
-                    <option value="0">(Без категории)</option>
                     @foreach (CategoryViewModel category in Model.Categories)
                     {
                         <option value="@category.Id">@category.Name</option>

@@ -50,7 +50,20 @@ namespace WebTeploobmenAppClient.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CategoryId");
+
                     b.ToTable("News");
+                });
+
+            modelBuilder.Entity("WebTeploobmenAppServer.Data.News", b =>
+                {
+                    b.HasOne("WebTeploobmenAppServer.Data.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
                 });
 #pragma warning restore 612, 618
         }

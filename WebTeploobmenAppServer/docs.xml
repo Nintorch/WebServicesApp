@@ -134,5 +134,17 @@
         <member name="M:WebTeploobmenAppClient.Migrations.AddNewsRelationToCategory.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
+        <member name="T:WebTeploobmenAppClient.Migrations.AddForeignKey">
+            <inheritdoc />
+        </member>
+        <member name="M:WebTeploobmenAppClient.Migrations.AddForeignKey.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:WebTeploobmenAppClient.Migrations.AddForeignKey.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:WebTeploobmenAppClient.Migrations.AddForeignKey.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
     </members>
 </doc>
