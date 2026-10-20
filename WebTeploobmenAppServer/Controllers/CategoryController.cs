@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebTeploobmenAppServer.Data;
@@ -5,6 +6,7 @@ using WebTeploobmenAppServer.Models;
 
 namespace WebTeploobmenAppServer.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class CategoryController : ControllerBase
