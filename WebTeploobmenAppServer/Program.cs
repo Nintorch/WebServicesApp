@@ -1,4 +1,7 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using WebTeploobmenAppServer.Data;
 
 namespace WebTeploobmenAppServer
@@ -17,6 +20,13 @@ namespace WebTeploobmenAppServer
             builder.Services.AddSwaggerGen(options => options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "docs.xml")));
             builder.Services.AddDbContext<WebServicesContext>(o => o.UseSqlite("Data Source = Teploobmen.db"));
 
+            // Установка конфигурации подключения
+            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options => //CookieAuthenticationOptions
+                {
+                    options.LoginPath = new PathString("/Account/Login");
+                });
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -28,6 +38,7 @@ namespace WebTeploobmenAppServer
 
             app.UseHttpsRedirection();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
 
