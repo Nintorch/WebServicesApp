@@ -55,6 +55,25 @@ namespace WebTeploobmenAppClient.Migrations
                     b.ToTable("News");
                 });
 
+            modelBuilder.Entity("WebTeploobmenAppServer.Data.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Login")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("PasswordHash")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
+                });
+
             modelBuilder.Entity("WebTeploobmenAppServer.Data.News", b =>
                 {
                     b.HasOne("WebTeploobmenAppServer.Data.Category", "Category")

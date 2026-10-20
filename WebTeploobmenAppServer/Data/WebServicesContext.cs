@@ -6,6 +6,7 @@ namespace WebTeploobmenAppServer.Data
     {
         public DbSet<News> News { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<User> Users { get; set; }
 
         public WebServicesContext(DbContextOptions<WebServicesContext> options) : base(options) { }
     }

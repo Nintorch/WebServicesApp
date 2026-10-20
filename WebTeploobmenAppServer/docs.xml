@@ -146,5 +146,17 @@
         <member name="M:WebTeploobmenAppClient.Migrations.AddForeignKey.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
+        <member name="T:WebTeploobmenAppClient.Migrations.AddUsers">
+            <inheritdoc />
+        </member>
+        <member name="M:WebTeploobmenAppClient.Migrations.AddUsers.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:WebTeploobmenAppClient.Migrations.AddUsers.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:WebTeploobmenAppClient.Migrations.AddUsers.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
     </members>
 </doc>
