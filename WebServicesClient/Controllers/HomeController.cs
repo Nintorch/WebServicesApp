@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
+using WebTeploobmenAppClient.Helpers;
 using WebTeploobmenAppClient.Models;
 
 namespace WebTeploobmenAppClient.Controllers
@@ -26,14 +27,18 @@ namespace WebTeploobmenAppClient.Controllers
 
         private async Task<List<CategoryViewModel>> GetCategories()
         {
-            HttpResponseMessage response = await new HttpClient().GetAsync(_config.Value.ServerRequestUri + "Category/GetCategories");
+            Uri uri = new(_config.Value.ServerRequestUri + "Category/GetCategories");
+            HttpClient client = RequestHelper.PrepareClient(uri, Request.Cookies);
+            HttpResponseMessage response = await client.GetAsync(uri);
             List<CategoryViewModel> categories = await response.Content.ReadFromJsonAsync<List<CategoryViewModel>>() ?? [];
             return categories;
         }
 
         public async Task<IActionResult> Index()
         {
-            HttpResponseMessage response = await new HttpClient().GetAsync(_config.Value.ServerRequestUri + "News/GetNews");
+            Uri uri = new(_config.Value.ServerRequestUri + "News/GetNews");
+            HttpClient client = RequestHelper.PrepareClient(uri, Request.Cookies);
+            HttpResponseMessage response = await client.GetAsync(uri);
             return View(new NewsCategoriesViewModel()
             {
                 News = await response.Content.ReadFromJsonAsync<List<NewsViewModel>>(),
@@ -44,7 +49,9 @@ namespace WebTeploobmenAppClient.Controllers
         [HttpPost]
         public async Task<IActionResult> Index(NewsViewModel model)
         {
-            HttpResponseMessage response = await new HttpClient().PostAsJsonAsync(_config.Value.ServerRequestUri + "News/SearchNews", model);
+            Uri uri = new(_config.Value.ServerRequestUri + "News/SearchNews");
+            HttpClient client = RequestHelper.PrepareClient(uri, Request.Cookies);
+            HttpResponseMessage response = await client.PostAsJsonAsync(uri, model);
             return View(new NewsCategoriesViewModel()
             {
                 News = await response.Content.ReadFromJsonAsync<List<NewsViewModel>>(),
@@ -56,7 +63,9 @@ namespace WebTeploobmenAppClient.Controllers
         {
             if (id > 0)
             {
-                HttpResponseMessage response = await new HttpClient().GetAsync(_config.Value.ServerRequestUri + "News/GetNews/?id=" + id);
+                Uri uri = new(_config.Value.ServerRequestUri + "News/GetNews/?id=" + id);
+                HttpClient client = RequestHelper.PrepareClient(uri, Request.Cookies);
+                HttpResponseMessage response = await client.GetAsync(uri);
                 List<NewsViewModel>? value = await response.Content.ReadFromJsonAsync<List<NewsViewModel>>();
                 if (value == null || value.Count == 0)
                 {
@@ -73,18 +82,24 @@ namespace WebTeploobmenAppClient.Controllers
         {
             if (model.Id == 0)
             {
-                await new HttpClient().PutAsJsonAsync(_config.Value.ServerRequestUri + "News/CreateNews", model);
+                Uri uri = new(_config.Value.ServerRequestUri + "News/CreateNews");
+                HttpClient client = RequestHelper.PrepareClient(uri, Request.Cookies);
+                await client.PutAsJsonAsync(uri, model);
             }
             else
             {
-                await new HttpClient().PatchAsJsonAsync(_config.Value.ServerRequestUri + "News/ModifyNews", model);
+                Uri uri = new(_config.Value.ServerRequestUri + "News/ModifyNews");
+                HttpClient client = RequestHelper.PrepareClient(uri, Request.Cookies);
+                await client.PatchAsJsonAsync(uri, model);
             }
             return RedirectToAction("Index");
         }
 
         public async Task<IActionResult> Delete(int id)
         {
-            await new HttpClient().DeleteAsync(_config.Value.ServerRequestUri + "News/DeleteNews/?id=" + id);
+            Uri uri = new(_config.Value.ServerRequestUri + "News/DeleteNews/?id=" + id);
+            HttpClient client = RequestHelper.PrepareClient(uri, Request.Cookies);
+            await client.DeleteAsync(uri);
             return RedirectToAction("Index");
         }
 
