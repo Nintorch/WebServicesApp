@@ -4,6 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using WebTeploobmenAppServer.Data;
 using WebTeploobmenAppServer.Models;
+using Microsoft.AspNetCore.Authentication.OAuth;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace WebTeploobmenAppServer.Controllers
 {
@@ -49,7 +52,7 @@ namespace WebTeploobmenAppServer.Controllers
             }
             if (!PasswordHasher.Verify(model.Password, user.PasswordHash))
             {
-                return Forbid();
+                return Unauthorized();
             }
 
             var claims = new List<Claim>
@@ -58,16 +61,18 @@ namespace WebTeploobmenAppServer.Controllers
             };
             var scheme = CookieAuthenticationDefaults.AuthenticationScheme;
             var identity = new ClaimsIdentity(claims, scheme);
-            await HttpContext.SignInAsync(scheme, new ClaimsPrincipal(identity));
 
-            return Ok();
-        }
-
-        [HttpGet("Logout")]
-        public async Task<IActionResult> Logout()
-        {
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return Ok();
+            var now = DateTime.UtcNow;
+            var jwt = new JwtSecurityToken(
+                issuer: JwtAuthOptions.Issuer,
+                audience: JwtAuthOptions.Audience,
+                notBefore: now,
+                claims: identity.Claims,
+                expires: now.Add(TimeSpan.FromMinutes(JwtAuthOptions.LifeTime)),
+                signingCredentials: new SigningCredentials(JwtAuthOptions.SecurityKey,
+                SecurityAlgorithms.HmacSha256));
+            var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
+            return Ok(encodedJwt);
         }
     }
 }
