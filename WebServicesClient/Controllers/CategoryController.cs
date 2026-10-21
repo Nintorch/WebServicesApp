@@ -26,7 +26,7 @@ namespace WebTeploobmenAppClient.Controllers
         public async Task<IActionResult> Index()
         {
             Uri uri = new(_config.Value.ServerRequestUri + "Category/GetCategories");
-            HttpClient client = RequestHelper.PrepareClient(uri, Request.Cookies);
+            HttpClient client = RequestHelper.PrepareClient(uri, RequestHelper.GetToken(HttpContext));
             HttpResponseMessage response = await client.GetAsync(uri);
             return View(await response.Content.ReadFromJsonAsync<List<CategoryViewModel>>());
         }
@@ -35,7 +35,7 @@ namespace WebTeploobmenAppClient.Controllers
         public async Task<IActionResult> Index(CategoryViewModel model)
         {
             Uri uri = new(_config.Value.ServerRequestUri + "Category/SearchCategories");
-            HttpClient client = RequestHelper.PrepareClient(uri, Request.Cookies);
+            HttpClient client = RequestHelper.PrepareClient(uri, RequestHelper.GetToken(HttpContext));
             HttpResponseMessage response = await client.PostAsJsonAsync(uri, model);
             return View(await response.Content.ReadFromJsonAsync<List<CategoryViewModel>>());
         }
@@ -45,7 +45,7 @@ namespace WebTeploobmenAppClient.Controllers
             if (id > 0)
             {
                 Uri uri = new(_config.Value.ServerRequestUri + "Category/GetCategories/?id=" + id);
-                HttpClient client = RequestHelper.PrepareClient(uri, Request.Cookies);
+                HttpClient client = RequestHelper.PrepareClient(uri, RequestHelper.GetToken(HttpContext));
                 HttpResponseMessage response = await client.GetAsync(uri);
                 List<CategoryViewModel>? value = await response.Content.ReadFromJsonAsync<List<CategoryViewModel>>();
                 if (value == null || value.Count == 0)
@@ -63,13 +63,13 @@ namespace WebTeploobmenAppClient.Controllers
             if (model.Id == 0)
             {
                 Uri uri = new(_config.Value.ServerRequestUri + "Category/CreateCategory");
-                HttpClient client = RequestHelper.PrepareClient(uri, Request.Cookies);
+                HttpClient client = RequestHelper.PrepareClient(uri, RequestHelper.GetToken(HttpContext));
                 await client.PutAsJsonAsync(uri, model);
             }
             else
             {
                 Uri uri = new(_config.Value.ServerRequestUri + "Category/ModifyCategory");
-                HttpClient client = RequestHelper.PrepareClient(uri, Request.Cookies);
+                HttpClient client = RequestHelper.PrepareClient(uri, RequestHelper.GetToken(HttpContext));
                 await client.PatchAsJsonAsync(uri, model);
             }
             return RedirectToAction("Index");
@@ -78,7 +78,7 @@ namespace WebTeploobmenAppClient.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             Uri uri = new(_config.Value.ServerRequestUri + "Category/DeleteCategory/?id=" + id);
-            HttpClient client = RequestHelper.PrepareClient(uri, Request.Cookies);
+            HttpClient client = RequestHelper.PrepareClient(uri, RequestHelper.GetToken(HttpContext));
             await client.DeleteAsync(uri);
             return RedirectToAction("Index");
         }

@@ -2,25 +2,19 @@
 using System.Net.Http;
 using System.Net;
 using System;
+using System.Net.Http.Headers;
 
 namespace WebTeploobmenAppClient.Helpers
 {
     public class RequestHelper
     {
-        public static HttpClient PrepareClient(Uri uri, IRequestCookieCollection? cookies)
+        public static HttpClient PrepareClient(Uri uri, string? token)
         {
             HttpClient client = new();
-
-            if (cookies != null && cookies.Count > 0)
-            {
-                CookieContainer cookieContainer = new();
-                foreach (var cookie in cookies)
-                {
-                    cookieContainer.Add(uri, new Cookie(cookie.Key, cookie.Value));
-                }
-                client.DefaultRequestHeaders.Add("cookie", cookieContainer.GetCookieHeader(uri));
-            }
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             return client;
         }
+
+        public static string GetToken(HttpContext context) => context.User.FindFirst("Token").Value;
     }
 }

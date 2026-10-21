@@ -53,7 +53,7 @@
             <param name="model">Параметры фильтрации</param>
             <returns></returns>
         </member>
-        <member name="M:WebTeploobmenAppServer.Controllers.NewsController.CreateNews(WebTeploobmenAppServer.Data.News)">
+        <member name="M:WebTeploobmenAppServer.Controllers.NewsController.CreateNews(WebTeploobmenAppServer.Models.NewsCreateViewModel)">
             <summary>
             Создание новости
             </summary>

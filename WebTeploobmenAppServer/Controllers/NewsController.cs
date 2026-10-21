@@ -63,7 +63,7 @@ namespace WebTeploobmenAppServer.Controllers
         /// <param name="model">Информация о новости</param>
         /// <returns></returns>
         [HttpPut("CreateNews")]
-        public IActionResult CreateNews(News model)
+        public IActionResult CreateNews(NewsCreateViewModel model)
         {
             News variant = new()
             {
