@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.SignalR;
 
 namespace WebTeploobmenAppServer.Hubs
 {
@@ -7,7 +8,7 @@ namespace WebTeploobmenAppServer.Hubs
         // TODO: online list
         public async Task SendMessage(string message)
         {
-            await Clients.All.SendAsync("Send", message);
+           await Clients.All.SendAsync("Send", Context.User.Identity.Name + ": " + message);
         }
     }
 }

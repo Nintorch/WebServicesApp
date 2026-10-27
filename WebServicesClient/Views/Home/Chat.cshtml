@@ -1,4 +1,4 @@
-﻿@model string
+﻿@model ChatViewModel
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -19,7 +19,7 @@
 
     <script>
         const hubConnection = new signalR.HubConnectionBuilder()
-            .withUrl("@(Model)chat")
+            .withUrl("@(Model.ServerUri)chat", { accessTokenFactory: () => "@(Model.Token)" })
             .build();
         hubConnection.on("Send", function (data) {
             $("#messages").append("<p>" + data + "</p>");

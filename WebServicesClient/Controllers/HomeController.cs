@@ -107,7 +107,11 @@ namespace WebTeploobmenAppClient.Controllers
 
         public IActionResult Chat()
         {
-            return View((object)_config.Value.ServerRequestUri);
+            return View(new ChatViewModel()
+            {
+                ServerUri = _config.Value.ServerRequestUri,
+                Token = RequestHelper.GetToken(HttpContext),
+            });
         }
 
         public IActionResult Privacy()
