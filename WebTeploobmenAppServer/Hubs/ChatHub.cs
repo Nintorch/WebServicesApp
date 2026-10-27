@@ -4,7 +4,10 @@ namespace WebTeploobmenAppServer.Hubs
 {
     public class ChatHub : Hub
     {
-        // TODO: messages
         // TODO: online list
+        public async Task SendMessage(string message)
+        {
+            await Clients.All.SendAsync("Send", message);
+        }
     }
 }

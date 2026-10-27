@@ -11,7 +11,7 @@
 
     <label for="message" class="form-label">Текст сообщения:</label>
     <input type="text" name="message" class="form-control" id="message" />
-    <button class="btn btn-primary">Отправить</button>
+    <button class="btn btn-primary" id="sendBtn">Отправить</button>
 
     <div id="messages">
 
@@ -21,12 +21,12 @@
         const hubConnection = new signalR.HubConnectionBuilder()
             .withUrl("@(Model)chat")
             .build();
-        /*hubConnection.on("Send", function (data) {
-            // обработка полученного сообщения
+        hubConnection.on("Send", function (data) {
+            $("#messages").append("<p>" + data + "</p>");
         });
         document.getElementById("sendBtn").addEventListener("click", function (e) {
-            hubConnection.invoke("Send", "User message");
-        });*/
+            hubConnection.invoke("SendMessage", document.getElementById("message").value);
+        });
         hubConnection.start();
     </script>
 
