@@ -1,0 +1,33 @@
+﻿@model string
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-left">
+    <h1 class="display-4">Чат</h1>
+
+    <a href="/Home/Index" class="btn btn-primary">Вернуться к списку новостей</a>
+    <br />
+
+    <label for="message" class="form-label">Текст сообщения:</label>
+    <input type="text" name="message" class="form-control" id="message" />
+    <button class="btn btn-primary">Отправить</button>
+
+    <div id="messages">
+
+    </div>
+
+    <script>
+        const hubConnection = new signalR.HubConnectionBuilder()
+            .withUrl("@(Model)chat")
+            .build();
+        /*hubConnection.on("Send", function (data) {
+            // обработка полученного сообщения
+        });
+        document.getElementById("sendBtn").addEventListener("click", function (e) {
+            hubConnection.invoke("Send", "User message");
+        });*/
+        hubConnection.start();
+    </script>
+
+</div>

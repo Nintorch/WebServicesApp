@@ -4,7 +4,9 @@ using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using WebTeploobmenAppClient;
 using WebTeploobmenAppServer.Data;
+using WebTeploobmenAppServer.Hubs;
 
 namespace WebTeploobmenAppServer
 {
@@ -15,6 +17,18 @@ namespace WebTeploobmenAppServer
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+            // Add CORS policy
+
+            builder.Services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(policy =>
+                {
+                    policy.WithOrigins(builder.Configuration.GetSection("MyConfig").Get<MyConfig>().ClientUri)
+                          .AllowAnyMethod()
+                          .AllowAnyHeader()
+                          .AllowCredentials(); // Enable credentials
+                });
+            });
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -68,6 +82,8 @@ namespace WebTeploobmenAppServer
                 });
             builder.Services.AddAuthorization();
 
+            builder.Services.AddSignalR();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -82,8 +98,11 @@ namespace WebTeploobmenAppServer
             app.UseAuthentication();
             app.UseAuthorization();
 
+            // Enable CORS middleware
+            app.UseCors();
 
             app.MapControllers();
+            app.MapHub<ChatHub>("/chat");
 
             app.Run();
         }

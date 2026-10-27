@@ -16,6 +16,8 @@ namespace WebTeploobmenAppClient.Controllers
     [Authorize]
     public class HomeController : Controller
     {
+        // TODO: logout when the token expires
+
         private readonly ILogger<HomeController> _logger;
         private readonly IOptions<MyConfig> _config;
 
@@ -101,6 +103,11 @@ namespace WebTeploobmenAppClient.Controllers
             HttpClient client = RequestHelper.PrepareClient(uri, RequestHelper.GetToken(HttpContext));
             await client.DeleteAsync(uri);
             return RedirectToAction("Index");
+        }
+
+        public IActionResult Chat()
+        {
+            return View((object)_config.Value.ServerRequestUri);
         }
 
         public IActionResult Privacy()
