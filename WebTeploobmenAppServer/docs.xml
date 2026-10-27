@@ -158,5 +158,17 @@
         <member name="M:WebTeploobmenAppClient.Migrations.AddUsers.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
+        <member name="T:WebTeploobmenAppClient.Migrations.AddRoles">
+            <inheritdoc />
+        </member>
+        <member name="M:WebTeploobmenAppClient.Migrations.AddRoles.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:WebTeploobmenAppClient.Migrations.AddRoles.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:WebTeploobmenAppClient.Migrations.AddRoles.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
     </members>
 </doc>

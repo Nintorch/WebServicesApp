@@ -71,12 +71,13 @@ namespace WebTeploobmenAppClient.Controllers
             switch (response.StatusCode)
             {
                 case HttpStatusCode.OK:
-                    string token = await response.Content.ReadAsStringAsync();
+                    AccountLoginSuccessViewModel result = await response.Content.ReadFromJsonAsync<AccountLoginSuccessViewModel>();
 
                     var claims = new List<Claim>
                     {
                         new(ClaimsIdentity.DefaultNameClaimType, model.Login),
-                        new("Token", token),
+                        new(ClaimsIdentity.DefaultRoleClaimType, result.RoleName),
+                        new("Token", result.Token),
                     };
                     var scheme = CookieAuthenticationDefaults.AuthenticationScheme;
                     var identity = new ClaimsIdentity(claims, scheme);

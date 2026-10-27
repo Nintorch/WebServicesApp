@@ -7,6 +7,7 @@ using WebTeploobmenAppServer.Models;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using Microsoft.EntityFrameworkCore;
 
 namespace WebTeploobmenAppServer.Controllers
 {
@@ -36,6 +37,7 @@ namespace WebTeploobmenAppServer.Controllers
             {
                 Login = model.Login,
                 PasswordHash = PasswordHasher.Hash(model.Password),
+                RoleId = 1, // "user" role
             };
             _context.Users.Add(user);
             _context.SaveChanges();
@@ -45,7 +47,7 @@ namespace WebTeploobmenAppServer.Controllers
         [HttpPost("Login")]
         public async Task<IActionResult> Login(AccountLoginViewModel model)
         {
-            User? user = _context.Users.FirstOrDefault(u => u.Login == model.Login);
+            User? user = _context.Users.Include(u => u.Role).FirstOrDefault(u => u.Login == model.Login);
             if (user == null || !PasswordHasher.Verify(model.Password, user.PasswordHash))
             {
                 return Unauthorized();
@@ -53,7 +55,8 @@ namespace WebTeploobmenAppServer.Controllers
 
             var claims = new List<Claim>
             {
-                new(ClaimsIdentity.DefaultNameClaimType, model.Login)
+                new(ClaimsIdentity.DefaultNameClaimType, user.Login),
+                new(ClaimsIdentity.DefaultRoleClaimType, user.Role.Name),
             };
             var scheme = CookieAuthenticationDefaults.AuthenticationScheme;
             var identity = new ClaimsIdentity(claims, scheme);
@@ -68,7 +71,12 @@ namespace WebTeploobmenAppServer.Controllers
                 signingCredentials: new SigningCredentials(JwtAuthOptions.SecurityKey,
                 SecurityAlgorithms.HmacSha256));
             var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
-            return Ok(encodedJwt);
+            var result = new AccountLoginSuccessViewModel()
+            {
+                Token = encodedJwt,
+                RoleName = user.Role.Name,
+            };
+            return Ok(result);
         }
     }
 }

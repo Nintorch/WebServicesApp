@@ -55,6 +55,21 @@ namespace WebTeploobmenAppClient.Migrations
                     b.ToTable("News");
                 });
 
+            modelBuilder.Entity("WebTeploobmenAppServer.Data.Role", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Roles");
+                });
+
             modelBuilder.Entity("WebTeploobmenAppServer.Data.User", b =>
                 {
                     b.Property<int>("Id")
@@ -69,7 +84,12 @@ namespace WebTeploobmenAppClient.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("RoleId")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
 
                     b.ToTable("Users");
                 });
@@ -83,6 +103,17 @@ namespace WebTeploobmenAppClient.Migrations
                         .IsRequired();
 
                     b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("WebTeploobmenAppServer.Data.User", b =>
+                {
+                    b.HasOne("WebTeploobmenAppServer.Data.Role", "Role")
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Role");
                 });
 #pragma warning restore 612, 618
         }
