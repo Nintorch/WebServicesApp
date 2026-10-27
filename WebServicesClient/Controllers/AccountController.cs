@@ -12,6 +12,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using WebTeploobmenAppClient.Helpers;
 using WebTeploobmenAppClient.Models;
+using System.Net;
 
 namespace WebTeploobmenAppClient.Controllers
 {
@@ -19,6 +20,8 @@ namespace WebTeploobmenAppClient.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IOptions<MyConfig> _config;
+
+        // TODO: Roles
 
         public AccountController(ILogger<HomeController> logger, IOptions<MyConfig> config)
         {
@@ -37,19 +40,22 @@ namespace WebTeploobmenAppClient.Controllers
         {
             if (model.Password != model.ConfirmPassword)
             {
-                // TODO
-                throw new NotImplementedException();
+                ModelState.AddModelError("register", "Пароли не совпадают.");
+                return View();
             }
 
             HttpResponseMessage response = await new HttpClient().PostAsJsonAsync(_config.Value.ServerRequestUri + "Account/Register", model);
-            if (response.StatusCode == System.Net.HttpStatusCode.OK)
+            switch (response.StatusCode)
             {
-                return RedirectToAction("Login");
+                case HttpStatusCode.OK:
+                    return RedirectToAction("Login");
+                case HttpStatusCode.Forbidden:
+                    ModelState.AddModelError("register", "Аккаунт с данным логином уже существует.");
+                    return View();
+                default:
+                    ModelState.AddModelError("register", "Неизвестная ошибка, свяжитесь с администратором.");
+                    return View();
             }
-
-            // TODO: Show error messages
-            // ModelState.AddModelError
-            throw new NotImplementedException();
         }
 
         [HttpGet]
@@ -62,23 +68,27 @@ namespace WebTeploobmenAppClient.Controllers
         public async Task<IActionResult> Login(AccountLoginViewModel model)
         {
             HttpResponseMessage response = await new HttpClient().PostAsJsonAsync(_config.Value.ServerRequestUri + "Account/Login", model);
-            if (response.StatusCode == System.Net.HttpStatusCode.OK)
+            switch (response.StatusCode)
             {
-                string token = await response.Content.ReadAsStringAsync();
+                case HttpStatusCode.OK:
+                    string token = await response.Content.ReadAsStringAsync();
 
-                var claims = new List<Claim>
-                {
-                    new(ClaimsIdentity.DefaultNameClaimType, model.Login),
-                    new("Token", token),
-                };
-                var scheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                var identity = new ClaimsIdentity(claims, scheme);
-                await HttpContext.SignInAsync(scheme, new ClaimsPrincipal(identity));
-                return RedirectToAction("Index", "Home");
+                    var claims = new List<Claim>
+                    {
+                        new(ClaimsIdentity.DefaultNameClaimType, model.Login),
+                        new("Token", token),
+                    };
+                    var scheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                    var identity = new ClaimsIdentity(claims, scheme);
+                    await HttpContext.SignInAsync(scheme, new ClaimsPrincipal(identity));
+                    return RedirectToAction("Index", "Home");
+                case HttpStatusCode.Unauthorized:
+                    ModelState.AddModelError("login", "Неверный логин или пароль.");
+                    return View();
+                default:
+                    ModelState.AddModelError("login", "Неизвестная ошибка, свяжитесь с администратором.");
+                    return View();
             }
-
-            // TODO: Show error messages
-            throw new NotImplementedException();
         }
 
         [HttpGet]

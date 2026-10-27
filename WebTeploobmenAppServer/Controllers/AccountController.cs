@@ -46,11 +46,7 @@ namespace WebTeploobmenAppServer.Controllers
         public async Task<IActionResult> Login(AccountLoginViewModel model)
         {
             User? user = _context.Users.FirstOrDefault(u => u.Login == model.Login);
-            if (user == null)
-            {
-                return NotFound();
-            }
-            if (!PasswordHasher.Verify(model.Password, user.PasswordHash))
+            if (user == null || !PasswordHasher.Verify(model.Password, user.PasswordHash))
             {
                 return Unauthorized();
             }
