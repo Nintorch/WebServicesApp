@@ -9,6 +9,9 @@
     <a href="/Home/Index" class="btn btn-primary">Вернуться к списку новостей</a>
     <br />
 
+    <p>Список пользователей онлайн:</p>
+    <p><div id="userList"></div></p>
+
     <label for="message" class="form-label">Текст сообщения:</label>
     <input type="text" name="message" class="form-control" id="message" />
     <button class="btn btn-primary" id="sendBtn">Отправить</button>
@@ -23,6 +26,13 @@
             .build();
         hubConnection.on("Send", function (data) {
             $("#messages").append("<p>" + data + "</p>");
+        });
+        hubConnection.on("GetUserList", function (data) {
+            console.log(data);
+            $("#userList").empty();
+            for (let login of data) {
+                $("#userList").append(login + "<br/>")
+            }
         });
         document.getElementById("sendBtn").addEventListener("click", function (e) {
             hubConnection.invoke("SendMessage", document.getElementById("message").value);

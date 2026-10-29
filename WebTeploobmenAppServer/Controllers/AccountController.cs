@@ -57,6 +57,7 @@ namespace WebTeploobmenAppServer.Controllers
             {
                 new(ClaimsIdentity.DefaultNameClaimType, user.Login),
                 new(ClaimsIdentity.DefaultRoleClaimType, user.Role.Name),
+                new("UserId", user.Id.ToString()),
             };
             var scheme = CookieAuthenticationDefaults.AuthenticationScheme;
             var identity = new ClaimsIdentity(claims, scheme);
