@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using WebTeploobmenAppServer.Data;
+using WebTeploobmenAppServer.Models;
 
 namespace WebTeploobmenAppServer.Hubs
 {
@@ -21,7 +22,7 @@ namespace WebTeploobmenAppServer.Hubs
 
         public async Task SendMessage(string message)
         {
-           await Clients.All.SendAsync("Send", Context.User.Identity.Name + ": " + message);
+           await Clients.All.SendAsync("Send", new MessageViewModel() { UserName = Context.User.Identity.Name, DateTime = DateTime.UtcNow, Message = message });
         }
 
         public override async Task OnConnectedAsync()

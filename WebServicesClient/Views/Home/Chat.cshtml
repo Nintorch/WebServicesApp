@@ -9,29 +9,37 @@
     <a href="/Home/Index" class="btn btn-primary">Вернуться к списку новостей</a>
     <br />
 
-    <p>Список пользователей онлайн:</p>
-    <p><div id="userList"></div></p>
+    <p>
+        Список пользователей онлайн:<br />
+        <div id="userList"></div>
+    </p>
 
     <label for="message" class="form-label">Текст сообщения:</label>
     <input type="text" name="message" class="form-control" id="message" />
     <button class="btn btn-primary" id="sendBtn">Отправить</button>
 
-    <div id="messages">
+    <div id="messageContainer">
+        <div id="messageContainerName">Общий чат</div>
+        <div id="messages">
 
+        </div>
     </div>
 
     <script>
+        function getUsernameBadge(username) { return `<span class="badge badge-primary">${username}</span>`; }
+        function buildMessage(message) { return getUsernameBadge(message.userName) + " " + message.dateTime + ": " + message.message + "<br/>"; }
+
         const hubConnection = new signalR.HubConnectionBuilder()
             .withUrl("@(Model.ServerUri)chat", { accessTokenFactory: () => "@(Model.Token)" })
             .build();
-        hubConnection.on("Send", function (data) {
-            $("#messages").append("<p>" + data + "</p>");
+        hubConnection.on("Send", function (message) {
+            $("#messages").append(buildMessage(message));
         });
         hubConnection.on("GetUserList", function (data) {
             console.log(data);
             $("#userList").empty();
             for (let login of data) {
-                $("#userList").append(login + "<br/>")
+                $("#userList").append(getUsernameBadge(login) + "<br/>")
             }
         });
         document.getElementById("sendBtn").addEventListener("click", function (e) {
