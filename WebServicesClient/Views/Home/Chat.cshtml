@@ -26,8 +26,25 @@
     </div>
 
     <script>
+        @if (User.IsInRole("admin"))
+        {
+        <text>
+        function deleteMessage(messageId) {
+            hubConnection.invoke("RemoveMessage", parseInt(messageId.replace("message", "")));
+        }
+        </text>
+        }
         function getUsernameBadge(username) { return `<span class="badge badge-primary">${username}</span>`; }
-        function buildMessage(message) { return getUsernameBadge(message.userName) + " " + message.dateTime + ": " + message.message + "<br/>"; }
+        function buildMessage(message) {
+            let messageId = "message" + message.id;
+            return `<div id="${messageId}">
+                ${getUsernameBadge(message.userName)} ${message.dateTime}: ${message.message}
+                @if (User.IsInRole("admin"))
+                {
+                    <br/><button onclick="deleteMessage('${messageId}')">Удалить</button>
+                }
+                </div>`;
+        }
 
         const hubConnection = new signalR.HubConnectionBuilder()
             .withUrl("@(Model.ServerUri)chat?chatId=@Model.ChatId", { accessTokenFactory: () => "@(Model.Token)" })
@@ -35,6 +52,9 @@
 
         hubConnection.on("Send", function (message) {
             $("#messages").append(buildMessage(message));
+        });
+        hubConnection.on("Remove", function (messageId) {
+            $("#message" + messageId).remove();
         });
         hubConnection.on("GetUserList", function (data) {
             console.log(data);

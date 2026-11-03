@@ -10,7 +10,6 @@ namespace WebTeploobmenAppServer.Hubs
     public class ChatHub : Hub
     {
         // TODO: private chats
-        // TODO: allow admins to delete messages
         // TODO: error checking
 
         private static Dictionary<string, User> _users = new();
@@ -33,7 +32,13 @@ namespace WebTeploobmenAppServer.Hubs
         private string GetCurrentGroup() => "chat" + GetChatId();
 
         private MessageViewModel MessageToViewModel(Message message)
-            => new() { UserName = message.Author.Login, DateTime = message.DateTime, Message = message.MessageText };
+            => new()
+            {
+                Id = message.Id,
+                UserName = message.Author.Login,
+                DateTime = message.DateTime,
+                Message = message.MessageText,
+            };
 
         public async Task SendMessage(string message)
         {
@@ -49,6 +54,19 @@ namespace WebTeploobmenAppServer.Hubs
             await _context.SaveChangesAsync();
             dbMessage.Author = user;
             await Clients.Group(GetCurrentGroup()).SendAsync("Send", MessageToViewModel(dbMessage));
+        }
+
+        [Authorize(Roles = "admin")]
+        public async Task RemoveMessage(int messageId)
+        {
+            Message? message = _context.Messages.Find(messageId);
+            if (message is null)
+            {
+                return;
+            }
+            _context.Messages.Remove(message);
+            await _context.SaveChangesAsync();
+            await Clients.Group(GetCurrentGroup()).SendAsync("Remove", messageId);
         }
 
         private async Task SendLastMessages()
