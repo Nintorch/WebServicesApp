@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.AspNetCore.SignalR.Protocol;
+using Microsoft.EntityFrameworkCore;
 using WebTeploobmenAppServer.Data;
 using WebTeploobmenAppServer.Models;
 
@@ -8,7 +10,6 @@ namespace WebTeploobmenAppServer.Hubs
     public class ChatHub : Hub
     {
         // TODO: private chats
-        // TODO: save messages in the db
         // TODO: allow admins to delete messages
         // TODO: error checking
 
@@ -31,9 +32,38 @@ namespace WebTeploobmenAppServer.Hubs
 
         private string GetCurrentGroup() => "chat" + GetChatId();
 
+        private MessageViewModel MessageToViewModel(Message message)
+            => new() { UserName = message.Author.Login, DateTime = message.DateTime, Message = message.MessageText };
+
         public async Task SendMessage(string message)
         {
-            await Clients.Group(GetCurrentGroup()).SendAsync("Send", new MessageViewModel() { UserName = Context.User.Identity.Name, DateTime = DateTime.UtcNow, Message = message });
+            User user = _users[Context.ConnectionId];
+            Message dbMessage = new()
+            {
+                ChatId = GetChatId(),
+                AuthorId = user.Id,
+                DateTime = DateTime.UtcNow,
+                MessageText = message,
+            };
+            _context.Messages.Add(dbMessage);
+            await _context.SaveChangesAsync();
+            dbMessage.Author = user;
+            await Clients.Group(GetCurrentGroup()).SendAsync("Send", MessageToViewModel(dbMessage));
+        }
+
+        private async Task SendLastMessages()
+        {
+            int chatId = GetChatId();
+            List<MessageViewModel> messages = _context.Messages
+                .Include(m => m.Author)
+                .Where(m => m.ChatId == chatId)
+                .Select(MessageToViewModel)
+                .TakeLast(50)
+                .ToList();
+            foreach (MessageViewModel message in messages)
+            {
+                await Clients.Caller.SendAsync("Send", message);
+            }
         }
 
         public override async Task OnConnectedAsync()
@@ -44,6 +74,7 @@ namespace WebTeploobmenAppServer.Hubs
             _users.Add(Context.ConnectionId, user);
             await Groups.AddToGroupAsync(Context.ConnectionId, GetCurrentGroup());
             await Clients.Group(GetCurrentGroup()).SendAsync("GetUserList", _users.Values.Select(u => u.Login).ToList());
+            await SendLastMessages();
         }
 
         public override async Task OnDisconnectedAsync(Exception? exception)
