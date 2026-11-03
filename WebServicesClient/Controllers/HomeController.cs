@@ -105,12 +105,13 @@ namespace WebTeploobmenAppClient.Controllers
             return RedirectToAction("Index");
         }
 
-        public IActionResult Chat()
+        public IActionResult Chat(int chatId = 0)
         {
             return View(new ChatViewModel()
             {
                 ServerUri = _config.Value.ServerRequestUri,
                 Token = RequestHelper.GetToken(HttpContext),
+                ChatId = chatId,
             });
         }
 

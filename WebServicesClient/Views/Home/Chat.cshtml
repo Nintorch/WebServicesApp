@@ -30,8 +30,9 @@
         function buildMessage(message) { return getUsernameBadge(message.userName) + " " + message.dateTime + ": " + message.message + "<br/>"; }
 
         const hubConnection = new signalR.HubConnectionBuilder()
-            .withUrl("@(Model.ServerUri)chat", { accessTokenFactory: () => "@(Model.Token)" })
+            .withUrl("@(Model.ServerUri)chat?chatId=@Model.ChatId", { accessTokenFactory: () => "@(Model.Token)" })
             .build();
+
         hubConnection.on("Send", function (message) {
             $("#messages").append(buildMessage(message));
         });

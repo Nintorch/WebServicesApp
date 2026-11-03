@@ -20,9 +20,20 @@ namespace WebTeploobmenAppServer.Hubs
             _context = context;
         }
 
+        private int GetChatId()
+        {
+            if (int.TryParse(Context.GetHttpContext().Request.Query["chatId"], out int chatId))
+            {
+                return chatId;
+            }
+            return 0;
+        }
+
+        private string GetCurrentGroup() => "chat" + GetChatId();
+
         public async Task SendMessage(string message)
         {
-           await Clients.All.SendAsync("Send", new MessageViewModel() { UserName = Context.User.Identity.Name, DateTime = DateTime.UtcNow, Message = message });
+            await Clients.Group(GetCurrentGroup()).SendAsync("Send", new MessageViewModel() { UserName = Context.User.Identity.Name, DateTime = DateTime.UtcNow, Message = message });
         }
 
         public override async Task OnConnectedAsync()
@@ -31,14 +42,15 @@ namespace WebTeploobmenAppServer.Hubs
             int userId = Convert.ToInt32(Context.User.FindFirst("UserId").Value);
             User? user = _context.Users.Find(userId);
             _users.Add(Context.ConnectionId, user);
-            await Clients.All.SendAsync("GetUserList", _users.Values.Select(u => u.Login).ToList());
+            await Groups.AddToGroupAsync(Context.ConnectionId, GetCurrentGroup());
+            await Clients.Group(GetCurrentGroup()).SendAsync("GetUserList", _users.Values.Select(u => u.Login).ToList());
         }
 
         public override async Task OnDisconnectedAsync(Exception? exception)
         {
             await base.OnDisconnectedAsync(exception);
             _users.Remove(Context.ConnectionId);
-            await Clients.All.SendAsync("GetUserList", _users.Values.Select(u => u.Login).ToList());
+            await Clients.Group(GetCurrentGroup()).SendAsync("GetUserList", _users.Values.Select(u => u.Login).ToList());
         }
     }
 }
