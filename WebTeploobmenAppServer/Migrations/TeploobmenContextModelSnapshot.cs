@@ -82,6 +82,27 @@ namespace WebTeploobmenAppClient.Migrations
                     b.ToTable("News");
                 });
 
+            modelBuilder.Entity("WebTeploobmenAppServer.Data.PrivateChat", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Person1Id")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Person2Id")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Person1Id");
+
+                    b.HasIndex("Person2Id");
+
+                    b.ToTable("PrivateChats");
+                });
+
             modelBuilder.Entity("WebTeploobmenAppServer.Data.Role", b =>
                 {
                     b.Property<int>("Id")
@@ -141,6 +162,25 @@ namespace WebTeploobmenAppClient.Migrations
                         .IsRequired();
 
                     b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("WebTeploobmenAppServer.Data.PrivateChat", b =>
+                {
+                    b.HasOne("WebTeploobmenAppServer.Data.User", "Person1")
+                        .WithMany()
+                        .HasForeignKey("Person1Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WebTeploobmenAppServer.Data.User", "Person2")
+                        .WithMany()
+                        .HasForeignKey("Person2Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Person1");
+
+                    b.Navigation("Person2");
                 });
 
             modelBuilder.Entity("WebTeploobmenAppServer.Data.User", b =>

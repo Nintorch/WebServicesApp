@@ -194,5 +194,17 @@
         <member name="M:WebTeploobmenAppClient.Migrations.AddMessagesChatId.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
+        <member name="T:WebTeploobmenAppClient.Migrations.AddPrivateChats">
+            <inheritdoc />
+        </member>
+        <member name="M:WebTeploobmenAppClient.Migrations.AddPrivateChats.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:WebTeploobmenAppClient.Migrations.AddPrivateChats.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:WebTeploobmenAppClient.Migrations.AddPrivateChats.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
     </members>
 </doc>

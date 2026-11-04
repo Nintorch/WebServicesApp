@@ -22,9 +22,15 @@ namespace WebTeploobmenAppServer.Hubs
 
         private int GetChatId()
         {
-            if (int.TryParse(Context.GetHttpContext().Request.Query["chatId"], out int chatId))
+            if (int.TryParse(Context.GetHttpContext().Request.Query["chatId"], out int chatId) && chatId > 0)
             {
-                return chatId;
+                PrivateChat? chat = _context.PrivateChats.Find(chatId);
+                User user = _users[Context.ConnectionId];
+                if (chat is not null && (chat.Person1Id == user.Id || chat.Person2Id == user.Id))
+                {
+                    return chatId;
+                }
+                // If the user doesn't have access to the private chat, send them to the global one instead
             }
             return 0;
         }
@@ -91,6 +97,7 @@ namespace WebTeploobmenAppServer.Hubs
             User? user = _context.Users.Find(userId);
             _users.Add(Context.ConnectionId, user);
             await Groups.AddToGroupAsync(Context.ConnectionId, GetCurrentGroup());
+            Console.WriteLine(GetCurrentGroup());
             await Clients.Group(GetCurrentGroup()).SendAsync("GetUserList", _users.Values.Select(u => u.Login).ToList());
             await SendLastMessages();
         }
