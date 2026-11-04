@@ -34,7 +34,22 @@
         }
         </text>
         }
+
+        async function openPrivateChat(userId) {
+            let response = await fetch("@(Model.ServerUri)manageChat/getPrivateChat?other=" + userId, {
+                headers: { Authorization: 'Bearer @(Model.Token)' }
+            });
+            if (response.status != 200) {
+                return;
+            }
+            let chatId = await response.json();
+            window.location.href = "/Home/Chat?chatId=" + chatId;
+        }
+
         function getUsernameBadge(username) { return `<span class="badge badge-primary">${username}</span>`; }
+        function buildUsernameInList(user) {
+            return `<div onclick="openPrivateChat(${user.userId})">${getUsernameBadge(user.login)}</div>`;
+        }
         function buildMessage(message) {
             let messageId = "message" + message.id;
             return `<div id="${messageId}">
@@ -57,10 +72,9 @@
             $("#message" + messageId).remove();
         });
         hubConnection.on("GetUserList", function (data) {
-            console.log(data);
             $("#userList").empty();
-            for (let login of data) {
-                $("#userList").append(getUsernameBadge(login) + "<br/>")
+            for (let user of data) {
+                $("#userList").append(buildUsernameInList(user));
             }
         });
         document.getElementById("sendBtn").addEventListener("click", function (e) {

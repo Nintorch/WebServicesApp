@@ -9,11 +9,13 @@ namespace WebTeploobmenAppServer.Hubs
 {
     public class ChatHub : Hub
     {
-        // TODO: private chats
+        // TODO: unread messages indicator
         // TODO: error checking
+        // TODO: logout when the token expires
 
         private static Dictionary<string, User> _users = new();
         private WebServicesContext _context;
+        private int _savedChatId = -1;
 
         public ChatHub(WebServicesContext context)
         {
@@ -22,16 +24,22 @@ namespace WebTeploobmenAppServer.Hubs
 
         private int GetChatId()
         {
+            if (_savedChatId >= 0)
+            {
+                return _savedChatId;
+            }
             if (int.TryParse(Context.GetHttpContext().Request.Query["chatId"], out int chatId) && chatId > 0)
             {
                 PrivateChat? chat = _context.PrivateChats.Find(chatId);
                 User user = _users[Context.ConnectionId];
                 if (chat is not null && (chat.Person1Id == user.Id || chat.Person2Id == user.Id))
                 {
+                    _savedChatId = chatId;
                     return chatId;
                 }
                 // If the user doesn't have access to the private chat, send them to the global one instead
             }
+            _savedChatId = 0;
             return 0;
         }
 
@@ -98,7 +106,7 @@ namespace WebTeploobmenAppServer.Hubs
             _users.Add(Context.ConnectionId, user);
             await Groups.AddToGroupAsync(Context.ConnectionId, GetCurrentGroup());
             Console.WriteLine(GetCurrentGroup());
-            await Clients.Group(GetCurrentGroup()).SendAsync("GetUserList", _users.Values.Select(u => u.Login).ToList());
+            await SendUserList();
             await SendLastMessages();
         }
 
@@ -106,7 +114,16 @@ namespace WebTeploobmenAppServer.Hubs
         {
             await base.OnDisconnectedAsync(exception);
             _users.Remove(Context.ConnectionId);
-            await Clients.Group(GetCurrentGroup()).SendAsync("GetUserList", _users.Values.Select(u => u.Login).ToList());
+            await SendUserList();
+        }
+
+        private async Task SendUserList()
+        {
+            await Clients.Group(GetCurrentGroup()).SendAsync("GetUserList", _users.Values.Select(u => new UserListViewModel()
+            {
+                Login = u.Login,
+                UserId = u.Id,
+            }).ToList());
         }
     }
 }

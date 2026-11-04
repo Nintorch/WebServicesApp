@@ -16,8 +16,6 @@ namespace WebTeploobmenAppClient.Controllers
     [Authorize]
     public class HomeController : Controller
     {
-        // TODO: logout when the token expires
-
         private readonly ILogger<HomeController> _logger;
         private readonly IOptions<MyConfig> _config;
 
