@@ -9,8 +9,6 @@ namespace WebTeploobmenAppServer.Hubs
 {
     public class ChatHub : Hub
     {
-        // TODO: error checking
-
         private static Dictionary<string, User> _users = new();
         private WebServicesContext _context;
         private int _savedChatId = -1;
@@ -26,11 +24,11 @@ namespace WebTeploobmenAppServer.Hubs
             {
                 return _savedChatId;
             }
-            if (int.TryParse(Context.GetHttpContext().Request.Query["chatId"], out int chatId) && chatId > 0)
+            if (int.TryParse(Context?.GetHttpContext()?.Request.Query["chatId"], out int chatId) && chatId > 0)
             {
                 PrivateChat? chat = _context.PrivateChats.Find(chatId);
-                User user = _users[Context.ConnectionId];
-                if (chat is not null && (chat.Person1Id == user.Id || chat.Person2Id == user.Id))
+                User? user = _users.GetValueOrDefault(Context.ConnectionId);
+                if (chat is not null && user is not null && (chat.Person1Id == user.Id || chat.Person2Id == user.Id))
                 {
                     _savedChatId = chatId;
                     return chatId;
@@ -54,7 +52,11 @@ namespace WebTeploobmenAppServer.Hubs
 
         public async Task SendMessage(string message)
         {
-            User user = _users[Context.ConnectionId];
+            User? user = _users.GetValueOrDefault(Context.ConnectionId);
+            if (user is null)
+            {
+                return;
+            }
             Message dbMessage = new()
             {
                 ChatId = GetChatId(),
@@ -99,11 +101,17 @@ namespace WebTeploobmenAppServer.Hubs
         public override async Task OnConnectedAsync()
         {
             await base.OnConnectedAsync();
-            int userId = Convert.ToInt32(Context.User.FindFirst("UserId").Value);
+            if (!int.TryParse(Context?.User?.FindFirst("UserId")?.Value, out int userId))
+            {
+                return;
+            }
             User? user = _context.Users.Find(userId);
+            if (user is null)
+            {
+                return;
+            }
             _users.Add(Context.ConnectionId, user);
             await Groups.AddToGroupAsync(Context.ConnectionId, GetCurrentGroup());
-            Console.WriteLine(GetCurrentGroup());
             await SendUserList();
             await SendLastMessages();
         }
