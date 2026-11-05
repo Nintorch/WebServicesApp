@@ -27,18 +27,15 @@ namespace WebTeploobmenAppClient.Controllers
 
         private async Task<List<CategoryViewModel>> GetCategories()
         {
-            Uri uri = new(_config.Value.ServerRequestUri + "Category/GetCategories");
-            HttpClient client = RequestHelper.PrepareClient(uri, RequestHelper.GetToken(HttpContext));
-            HttpResponseMessage response = await client.GetAsync(uri);
+            HttpResponseMessage response = await RequestHelper.GetAsync(_config.Value.ServerRequestUri + "Category/GetCategories", HttpContext);
             List<CategoryViewModel> categories = await response.Content.ReadFromJsonAsync<List<CategoryViewModel>>() ?? [];
             return categories;
         }
 
         public async Task<IActionResult> Index()
         {
-            Uri uri = new(_config.Value.ServerRequestUri + "News/GetNews");
-            HttpClient client = RequestHelper.PrepareClient(uri, RequestHelper.GetToken(HttpContext));
-            HttpResponseMessage response = await client.GetAsync(uri);
+            HttpResponseMessage response = await RequestHelper.GetAsync(_config.Value.ServerRequestUri + "News/GetNews", HttpContext);
+            if (RequestHelper.IsUnauthorized(this, response, out IActionResult action)) { return action; }
             return View(new NewsCategoriesViewModel()
             {
                 News = await response.Content.ReadFromJsonAsync<List<NewsViewModel>>(),
@@ -49,9 +46,8 @@ namespace WebTeploobmenAppClient.Controllers
         [HttpPost]
         public async Task<IActionResult> Index(NewsViewModel model)
         {
-            Uri uri = new(_config.Value.ServerRequestUri + "News/SearchNews");
-            HttpClient client = RequestHelper.PrepareClient(uri, RequestHelper.GetToken(HttpContext));
-            HttpResponseMessage response = await client.PostAsJsonAsync(uri, model);
+            HttpResponseMessage response = await RequestHelper.PostAsJsonAsync(_config.Value.ServerRequestUri + "News/SearchNews", HttpContext, model);
+            if (RequestHelper.IsUnauthorized(this, response, out IActionResult action)) { return action; }
             return View(new NewsCategoriesViewModel()
             {
                 News = await response.Content.ReadFromJsonAsync<List<NewsViewModel>>(),
@@ -63,9 +59,8 @@ namespace WebTeploobmenAppClient.Controllers
         {
             if (id > 0)
             {
-                Uri uri = new(_config.Value.ServerRequestUri + "News/GetNews/?id=" + id);
-                HttpClient client = RequestHelper.PrepareClient(uri, RequestHelper.GetToken(HttpContext));
-                HttpResponseMessage response = await client.GetAsync(uri);
+                HttpResponseMessage response = await RequestHelper.GetAsync(_config.Value.ServerRequestUri + "News/GetNews/?id=" + id, HttpContext);
+                if (RequestHelper.IsUnauthorized(this, response, out IActionResult action)) { return action; }
                 List<NewsViewModel>? value = await response.Content.ReadFromJsonAsync<List<NewsViewModel>>();
                 if (value == null || value.Count == 0)
                 {
@@ -84,7 +79,7 @@ namespace WebTeploobmenAppClient.Controllers
             {
                 Uri uri = new(_config.Value.ServerRequestUri + "News/CreateNews");
                 HttpClient client = RequestHelper.PrepareClient(uri, RequestHelper.GetToken(HttpContext));
-                var a = await client.PutAsJsonAsync(uri, model);
+                await client.PutAsJsonAsync(uri, model);
             }
             else
             {

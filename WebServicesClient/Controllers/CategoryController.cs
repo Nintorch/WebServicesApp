@@ -25,18 +25,16 @@ namespace WebTeploobmenAppClient.Controllers
 
         public async Task<IActionResult> Index()
         {
-            Uri uri = new(_config.Value.ServerRequestUri + "Category/GetCategories");
-            HttpClient client = RequestHelper.PrepareClient(uri, RequestHelper.GetToken(HttpContext));
-            HttpResponseMessage response = await client.GetAsync(uri);
+            HttpResponseMessage response = await RequestHelper.GetAsync(_config.Value.ServerRequestUri + "Category/GetCategories", HttpContext);
+            if (RequestHelper.IsUnauthorized(this, response, out IActionResult action)) { return action; }
             return View(await response.Content.ReadFromJsonAsync<List<CategoryViewModel>>());
         }
 
         [HttpPost]
         public async Task<IActionResult> Index(CategoryViewModel model)
         {
-            Uri uri = new(_config.Value.ServerRequestUri + "Category/SearchCategories");
-            HttpClient client = RequestHelper.PrepareClient(uri, RequestHelper.GetToken(HttpContext));
-            HttpResponseMessage response = await client.PostAsJsonAsync(uri, model);
+            HttpResponseMessage response = await RequestHelper.PostAsJsonAsync(_config.Value.ServerRequestUri + "Category/SearchCategories", HttpContext, model);
+            if (RequestHelper.IsUnauthorized(this, response, out IActionResult action)) { return action; }
             return View(await response.Content.ReadFromJsonAsync<List<CategoryViewModel>>());
         }
 
@@ -44,9 +42,8 @@ namespace WebTeploobmenAppClient.Controllers
         {
             if (id > 0)
             {
-                Uri uri = new(_config.Value.ServerRequestUri + "Category/GetCategories/?id=" + id);
-                HttpClient client = RequestHelper.PrepareClient(uri, RequestHelper.GetToken(HttpContext));
-                HttpResponseMessage response = await client.GetAsync(uri);
+                HttpResponseMessage response = await RequestHelper.GetAsync(_config.Value.ServerRequestUri + "Category/GetCategories/?id=" + id, HttpContext);
+                if (RequestHelper.IsUnauthorized(this, response, out IActionResult action)) { return action; }
                 List<CategoryViewModel>? value = await response.Content.ReadFromJsonAsync<List<CategoryViewModel>>();
                 if (value == null || value.Count == 0)
                 {

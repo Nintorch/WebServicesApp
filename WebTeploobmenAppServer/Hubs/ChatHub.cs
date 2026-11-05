@@ -9,9 +9,7 @@ namespace WebTeploobmenAppServer.Hubs
 {
     public class ChatHub : Hub
     {
-        // TODO: unread messages indicator
         // TODO: error checking
-        // TODO: logout when the token expires
 
         private static Dictionary<string, User> _users = new();
         private WebServicesContext _context;
